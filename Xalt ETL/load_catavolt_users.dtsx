@@ -11,8 +11,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="load_catavolt_users"
   DTS:PackageType="5"
-  DTS:VersionBuild="34"
-  DTS:VersionGUID="{3A79E7A9-91E8-4FF9-93B8-0F2E72C73A46}">
+  DTS:VersionBuild="35"
+  DTS:VersionGUID="{F9B179AC-7E8A-4673-A275-5ABD9A50294F}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">6</DTS:Property>
   <DTS:ConnectionManagers>
@@ -29,7 +29,7 @@
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAh/EXNc7gKUaU22pfkx84IgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAABDNRVs3zTyZUCZ2BgW6BQuAAAAAASAAACgAAAAEAAAANmuM+h7FMngBc9clm4uQGwYAAAAThDWloGhDnk6nYSRfvjTXnJhB7Qy7zGjFAAAAEzivZrtxDHoSRE7VKlt6lBbH+4C</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAh/EXNc7gKUaU22pfkx84IgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACvMGw+VLX1C4b7mRcRB2AQAAAAAASAAACgAAAAEAAAAMW5A90urtSW5FSAck1WekEYAAAAXtFCnn9t4T2X90qIMZy0yiUXY2JYVsXVFAAAAGYeXGza2lxpjjOHpBLDbZ3FRCyd</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -479,9 +479,9 @@ where [refTable].[catavolt_spectrum_code] = ?</property>
                   ,0 as catavolt_active
                   ,'2018-09-26' as catavolt_start_date
 				  ,Title as catavolt_role
-				  ,'mstromme' as catavolt_create_user
+				  ,'svc_xalt' as catavolt_create_user
 				  ,Worker_Comp_Code
-				  ,'I' as catavolt_spectrum_employment_status
+				  ,'A' as catavolt_spectrum_employment_status
 				
 				                  
                        
