@@ -12,8 +12,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="load_catavolt_users"
   DTS:PackageType="5"
-  DTS:VersionBuild="58"
-  DTS:VersionGUID="{B50AFF5C-1344-45B4-9F44-337785C7B022}">
+  DTS:VersionBuild="97"
+  DTS:VersionGUID="{EC56F516-6A99-43B0-86CA-994BA7A01099}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">6</DTS:Property>
   <DTS:ConnectionManagers>
@@ -30,7 +30,7 @@
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAh/EXNc7gKUaU22pfkx84IgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAB0Xv/YQE5sqVqfSQ6WBzVSAAAAAASAAACgAAAAEAAAAN/v9653WY4NlbAA6GTcOVIYAAAA3D+p7HcPubpEo3eT5p3FW5IiGYXfIPKuFAAAACYYTxzUHkdjtpq7PtHkFSQbxEIb</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAh/EXNc7gKUaU22pfkx84IgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAA7hb1w3Sx7WGtoCq/+bZvdAAAAAASAAACgAAAAEAAAAHdhfXqsUGIOmBxoB0rKEEYYAAAA4LDn2e6Zv2LCcFTmKKdYZz7gG1HkBCetFAAAAINknREBZC/YYNj4jHJUtkmarDYO</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -51,6 +51,7 @@
     <DTS:Executable
       DTS:refId="Package\(DFT) Load Data Into Destination Task"
       DTS:CreationName="SSIS.Pipeline.3"
+      DTS:DelayValidation="True"
       DTS:Description="Data Flow Task"
       DTS:DTSID="{C0EB3DD7-0727-47C9-B2E3-E809FF76237A}"
       DTS:ExecutableType="SSIS.Pipeline.3"
@@ -161,6 +162,533 @@
               </outputs>
             </component>
             <component
+              refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Base Table"
+              componentClassID="DTSTransform.OLEDBCommand.3"
+              contactInfo="OLE DB Command;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;2"
+              description="Runs an SQL statement for each row in a data flow. For example, call a 'new employee setup' stored procedure for each row in the 'new employees' table. Note: running an SQL statement for each row of a large data flow may take a long time."
+              name="(DEST) Load Base Table"
+              usesDispositions="true"
+              version="2">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">INSERT INTO dbo.catavolt_users
+           (
+		    catavolt_user_id
+		   ,catavolt_name
+           ,catavolt_email
+           ,catavolt_spectrum_code
+           ,catavolt_active
+           ,catavolt_start_date
+           ,catavolt_role
+		   ,catavolt_create_user
+		   ,catavolt_spectrum_workers_comp_code
+		   ,catavolt_spectrum_employment_status
+                                   ,catavolt_last_changed
+                                   ,catavolt_hash
+		   )
+     
+	 
+	 (( SELECT
+	               RTRIM(LOWER(LEFT(First_Name,1))) + RTRIM(LOWER(LEFT(Last_Name,1))) + RTRIM(LOWER(SUBSTRING(Last_Name,2,LEN(Last_Name)))) as catavolt_user_id
+		          ,RTRIM(UPPER(LEFT(First_Name,1))) + RTRIM(LOWER(SUBSTRING(First_Name,2,LEN(First_Name)))) + ' ' + RTRIM(UPPER(LEFT(Last_Name,1))) + RTRIM(LOWER(SUBSTRING(Last_Name,2,LEN(Last_Name)))) as catavolt_name
+		          ,RTRIM(LOWER(LEFT(First_Name,1))) + RTRIM(LOWER(LEFT(Last_Name,1))) + RTRIM(LOWER(SUBSTRING(Last_Name,2,LEN(Last_Name)))) + '@suburbanelectric.com' as catavolt_email
+				  ,Employee_Code as catavolt_spectrum_code
+                  ,0 as catavolt_active
+                  ,'2018-09-26' as catavolt_start_date
+				  ,Title as catavolt_role
+				  ,'svc_xalt' as catavolt_create_user
+				  ,Worker_Comp_Code
+				  ,'A' as catavolt_spectrum_employment_status
+				  ,GETDATE()
+                                                                  ,?
+				                  
+                       
+            FROM [Spectrum_Employee]
+            where Company_Code IN ('SUB', 'CPR')
+			and Employment_Status = 'A'
+			and Employee_Code = ?
+
+
+))
+
+</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Base Table.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[10.1.1.7.xalt_dev.svc_xalt]"
+                  connectionManagerRefId="Package.ConnectionManagers[10.1.1.7.xalt_dev.svc_xalt]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Base Table.Inputs[OLE DB Command Input]"
+                  errorOrTruncationOperation="Command Execution"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Command Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Base Table.Inputs[OLE DB Command Input].Columns[Hash]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="66"
+                      cachedName="Hash"
+                      externalMetadataColumnId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Base Table.Inputs[OLE DB Command Input].ExternalColumns[Param_0]"
+                      lineageId="Package\(DFT) Load Data Into Destination Task\Script Component.Outputs[Output 0].Columns[Hash]" />
+                    <inputColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Base Table.Inputs[OLE DB Command Input].Columns[Employee_Code]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="11"
+                      cachedName="Employee_Code"
+                      externalMetadataColumnId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Base Table.Inputs[OLE DB Command Input].ExternalColumns[Param_1]"
+                      lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[Employee_Code]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Base Table.Inputs[OLE DB Command Input].ExternalColumns[Param_0]"
+                      codePage="1252"
+                      dataType="str"
+                      length="66"
+                      name="Param_0">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Base Table.Inputs[OLE DB Command Input].ExternalColumns[Param_1]"
+                      codePage="1252"
+                      dataType="str"
+                      length="11"
+                      name="Param_1">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Base Table.Outputs[OLE DB Command Output]"
+                  exclusionGroup="1"
+                  name="OLE DB Command Output"
+                  synchronousInputId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Base Table.Inputs[OLE DB Command Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Base Table.Outputs[OLE DB Command Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Command Error Output"
+                  synchronousInputId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Base Table.Inputs[OLE DB Command Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Base Table.Outputs[OLE DB Command Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Base Table.Outputs[OLE DB Command Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Base Table.Outputs[OLE DB Command Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Base Table.Outputs[OLE DB Command Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Exception Table"
+              componentClassID="DTSAdapter.OLEDBDestination.3"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="(DEST) Load Exception Table"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[catavolt_users_exception]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Exception Table.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[10.1.1.7.xalt_dev.svc_xalt]"
+                  connectionManagerRefId="Package.ConnectionManagers[10.1.1.7.xalt_dev.svc_xalt]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Exception Table.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Exception Table.Inputs[OLE DB Destination Input].Columns[Employee_Code]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="11"
+                      cachedName="Employee_Code"
+                      externalMetadataColumnId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Exception Table.Inputs[OLE DB Destination Input].ExternalColumns[catavolt_users_spectrum_code]"
+                      lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[Employee_Code]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Exception Table.Inputs[OLE DB Destination Input].ExternalColumns[catavolt_users_spectrum_code]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="catavolt_users_spectrum_code" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Exception Table.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Exception Table.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Exception Table.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Exception Table.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Exception Table.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Exception Table.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table"
+              componentClassID="DTSAdapter.OLEDBDestination.3"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="(DEST) Load Staging Table"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[catavolt_users_staging]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[10.1.1.7.xalt_dev.svc_xalt]"
+                  connectionManagerRefId="Package.ConnectionManagers[10.1.1.7.xalt_dev.svc_xalt]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Inputs[OLE DB Destination Input].Columns[Employee_Code]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="11"
+                      cachedName="Employee_Code"
+                      externalMetadataColumnId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[catavolt_spectrum_code]"
+                      lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[Employee_Code]" />
+                    <inputColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Inputs[OLE DB Destination Input].Columns[Worker_Comp_Code]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="6"
+                      cachedName="Worker_Comp_Code"
+                      externalMetadataColumnId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[catavolt_spectrum_workers_comp_code]"
+                      lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[Worker_Comp_Code]" />
+                    <inputColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Inputs[OLE DB Destination Input].Columns[Hash]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="66"
+                      cachedName="Hash"
+                      externalMetadataColumnId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[catavolt_hash]"
+                      lineageId="Package\(DFT) Load Data Into Destination Task\Script Component.Outputs[Output 0].Columns[Hash]" />
+                    <inputColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Inputs[OLE DB Destination Input].Columns[Employment_Status]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="1"
+                      cachedName="Employment_Status"
+                      externalMetadataColumnId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[catavolt_spectrum_employment_status]"
+                      lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[Employment_Status]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[catavolt_spectrum_code]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="catavolt_spectrum_code" />
+                    <externalMetadataColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[catavolt_spectrum_workers_comp_code]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="catavolt_spectrum_workers_comp_code" />
+                    <externalMetadataColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[catavolt_hash]"
+                      codePage="1252"
+                      dataType="str"
+                      length="66"
+                      name="catavolt_hash" />
+                    <externalMetadataColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[catavolt_spectrum_employment_status]"
+                      codePage="1252"
+                      dataType="str"
+                      length="1"
+                      name="catavolt_spectrum_employment_status" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\(DFT) Load Data Into Destination Task\Conditional Split"
+              componentClassID="DTSTransform.ConditionalSplit.3"
+              contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+              name="Conditional Split"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\(DFT) Load Data Into Destination Task\Conditional Split.Inputs[Conditional Split Input]"
+                  description="Input to the Conditional Split Transformation"
+                  name="Conditional Split Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\Conditional Split.Inputs[Conditional Split Input].Columns[First_Name]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="First_Name"
+                      lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[First_Name]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\(DFT) Load Data Into Destination Task\Conditional Split.Outputs[First Name Missing]"
+                  description="Output 1 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="First Name Missing"
+                  synchronousInputId="Package\(DFT) Load Data Into Destination Task\Conditional Split.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">[LEN]([RTRIM](#{Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[First_Name]})) == 0</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">LEN(RTRIM(First_Name)) == 0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">0</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\(DFT) Load Data Into Destination Task\Conditional Split.Outputs[Conditional Split Default Output]"
+                  description="Default Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  name="Conditional Split Default Output"
+                  synchronousInputId="Package\(DFT) Load Data Into Destination Task\Conditional Split.Inputs[Conditional Split Input]">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      name="IsDefaultOut">true</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\(DFT) Load Data Into Destination Task\Conditional Split.Outputs[Conditional Split Error Output]"
+                  description="Error Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Conditional Split Error Output"
+                  synchronousInputId="Package\(DFT) Load Data Into Destination Task\Conditional Split.Inputs[Conditional Split Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\Conditional Split.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\(DFT) Load Data Into Destination Task\Conditional Split.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\Conditional Split.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\(DFT) Load Data Into Destination Task\Conditional Split.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
               refId="Package\(DFT) Load Data Into Destination Task\Data Conversion"
               componentClassID="DTSTransform.DataConvert.3"
               contactInfo="Data Conversion;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
@@ -179,41 +707,6 @@
                       cachedLength="11"
                       cachedName="Employee_Code"
                       lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[Employee_Code]" />
-                    <inputColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\Data Conversion.Inputs[Data Conversion Input].Columns[First_Name]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="20"
-                      cachedName="First_Name"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[First_Name]" />
-                    <inputColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\Data Conversion.Inputs[Data Conversion Input].Columns[Last_Name]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="30"
-                      cachedName="Last_Name"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[Last_Name]" />
-                    <inputColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\Data Conversion.Inputs[Data Conversion Input].Columns[Employment_Status]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="1"
-                      cachedName="Employment_Status"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[Employment_Status]" />
-                    <inputColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\Data Conversion.Inputs[Data Conversion Input].Columns[Worker_Comp_Code]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="6"
-                      cachedName="Worker_Comp_Code"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[Worker_Comp_Code]" />
-                    <inputColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\Data Conversion.Inputs[Data Conversion Input].Columns[Title]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="50"
-                      cachedName="Title"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[Title]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -240,111 +733,6 @@
                           dataType="System.Int32"
                           description="Specifies the input column used as the source of data for the conversion."
                           name="SourceInputColumnLineageID">#{Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[Employee_Code]}</property>
-                        <property
-                          dataType="System.Boolean"
-                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
-                          name="FastParse">false</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of First_Name]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      length="20"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of First_Name]"
-                      name="Copy of First_Name"
-                      truncationRowDisposition="FailComponent">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the input column used as the source of data for the conversion."
-                          name="SourceInputColumnLineageID">#{Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[First_Name]}</property>
-                        <property
-                          dataType="System.Boolean"
-                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
-                          name="FastParse">false</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of Last_Name]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      length="30"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of Last_Name]"
-                      name="Copy of Last_Name"
-                      truncationRowDisposition="FailComponent">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the input column used as the source of data for the conversion."
-                          name="SourceInputColumnLineageID">#{Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[Last_Name]}</property>
-                        <property
-                          dataType="System.Boolean"
-                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
-                          name="FastParse">false</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of Employment_Status]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      length="1"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of Employment_Status]"
-                      name="Copy of Employment_Status"
-                      truncationRowDisposition="FailComponent">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the input column used as the source of data for the conversion."
-                          name="SourceInputColumnLineageID">#{Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[Employment_Status]}</property>
-                        <property
-                          dataType="System.Boolean"
-                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
-                          name="FastParse">false</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of Worker_Comp_Code]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      length="6"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of Worker_Comp_Code]"
-                      name="Copy of Worker_Comp_Code"
-                      truncationRowDisposition="FailComponent">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the input column used as the source of data for the conversion."
-                          name="SourceInputColumnLineageID">#{Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[Worker_Comp_Code]}</property>
-                        <property
-                          dataType="System.Boolean"
-                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
-                          name="FastParse">false</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of Title]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      length="50"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of Title]"
-                      name="Copy of Title"
-                      truncationRowDisposition="FailComponent">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the input column used as the source of data for the conversion."
-                          name="SourceInputColumnLineageID">#{Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[Title]}</property>
                         <property
                           dataType="System.Boolean"
                           description="Indicates whether the column uses the faster, locale-neutral parsing routines."
@@ -554,311 +942,6 @@ where [refTable].[catavolt_spectrum_code] = ?</property>
               </outputs>
             </component>
             <component
-              refId="Package\(DFT) Load Data Into Destination Task\OLE DB Command"
-              componentClassID="DTSTransform.OLEDBCommand.3"
-              contactInfo="OLE DB Command;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;2"
-              description="Runs an SQL statement for each row in a data flow. For example, call a 'new employee setup' stored procedure for each row in the 'new employees' table. Note: running an SQL statement for each row of a large data flow may take a long time."
-              name="OLE DB Command"
-              usesDispositions="true"
-              version="2">
-              <properties>
-                <property
-                  dataType="System.Int32"
-                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
-                  name="CommandTimeout">0</property>
-                <property
-                  dataType="System.String"
-                  description="The SQL command to be executed."
-                  expressionType="Notify"
-                  name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">INSERT INTO dbo.catavolt_users
-           (
-		    catavolt_user_id
-		   ,catavolt_name
-           ,catavolt_email
-           ,catavolt_spectrum_code
-           ,catavolt_active
-           ,catavolt_start_date
-           ,catavolt_role
-		   ,catavolt_create_user
-		   ,catavolt_spectrum_workers_comp_code
-		   ,catavolt_spectrum_employment_status
-                                   ,catavolt_last_changed
-                                   ,catavolt_hash
-		   )
-     
-	 
-	 (( SELECT
-	               RTRIM(LOWER(LEFT(First_Name,1))) + RTRIM(LOWER(LEFT(Last_Name,1))) + RTRIM(LOWER(SUBSTRING(Last_Name,2,LEN(Last_Name)))) as catavolt_user_id
-		          ,RTRIM(UPPER(LEFT(First_Name,1))) + RTRIM(LOWER(SUBSTRING(First_Name,2,LEN(First_Name)))) + ' ' + RTRIM(UPPER(LEFT(Last_Name,1))) + RTRIM(LOWER(SUBSTRING(Last_Name,2,LEN(Last_Name)))) as catavolt_name
-		          ,RTRIM(LOWER(LEFT(First_Name,1))) + RTRIM(LOWER(LEFT(Last_Name,1))) + RTRIM(LOWER(SUBSTRING(Last_Name,2,LEN(Last_Name)))) + '@suburbanelectric.com' as catavolt_email
-				  ,Employee_Code as catavolt_spectrum_code
-                  ,0 as catavolt_active
-                  ,'2018-09-26' as catavolt_start_date
-				  ,Title as catavolt_role
-				  ,'svc_etl' as catavolt_create_user
-				  ,Worker_Comp_Code
-				  ,'A' as catavolt_spectrum_employment_status
-				  ,GETDATE()
-                                                                  ,?
-				                  
-                       
-            FROM [Spectrum_Employee]
-            where Company_Code IN ('SUB', 'CPR')
-			and Employment_Status = 'A'
-			and Employee_Code = ?
-
-
-))
-
-</property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies the column code page to use when code page information is unavailable from the data source."
-                  name="DefaultCodePage">1252</property>
-              </properties>
-              <connections>
-                <connection
-                  refId="Package\(DFT) Load Data Into Destination Task\OLE DB Command.Connections[OleDbConnection]"
-                  connectionManagerID="Package.ConnectionManagers[10.1.1.7.xalt_dev.svc_xalt]"
-                  connectionManagerRefId="Package.ConnectionManagers[10.1.1.7.xalt_dev.svc_xalt]"
-                  description="The OLE DB runtime connection used to access the database."
-                  name="OleDbConnection" />
-              </connections>
-              <inputs>
-                <input
-                  refId="Package\(DFT) Load Data Into Destination Task\OLE DB Command.Inputs[OLE DB Command Input]"
-                  errorOrTruncationOperation="Command Execution"
-                  errorRowDisposition="FailComponent"
-                  hasSideEffects="true"
-                  name="OLE DB Command Input">
-                  <inputColumns>
-                    <inputColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\OLE DB Command.Inputs[OLE DB Command Input].Columns[Hash]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="66"
-                      cachedName="Hash"
-                      externalMetadataColumnId="Package\(DFT) Load Data Into Destination Task\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_0]"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\Script Component.Outputs[Output 0].Columns[Hash]" />
-                    <inputColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\OLE DB Command.Inputs[OLE DB Command Input].Columns[Employee_Code]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="11"
-                      cachedName="Employee_Code"
-                      externalMetadataColumnId="Package\(DFT) Load Data Into Destination Task\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_1]"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[Employee_Code]" />
-                  </inputColumns>
-                  <externalMetadataColumns
-                    isUsed="True">
-                    <externalMetadataColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_0]"
-                      codePage="1252"
-                      dataType="str"
-                      length="66"
-                      name="Param_0">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
-                          name="DBParamInfoFlags">65</property>
-                      </properties>
-                    </externalMetadataColumn>
-                    <externalMetadataColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_1]"
-                      codePage="1252"
-                      dataType="str"
-                      length="11"
-                      name="Param_1">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
-                          name="DBParamInfoFlags">65</property>
-                      </properties>
-                    </externalMetadataColumn>
-                  </externalMetadataColumns>
-                </input>
-              </inputs>
-              <outputs>
-                <output
-                  refId="Package\(DFT) Load Data Into Destination Task\OLE DB Command.Outputs[OLE DB Command Output]"
-                  exclusionGroup="1"
-                  name="OLE DB Command Output"
-                  synchronousInputId="Package\(DFT) Load Data Into Destination Task\OLE DB Command.Inputs[OLE DB Command Input]">
-                  <externalMetadataColumns />
-                </output>
-                <output
-                  refId="Package\(DFT) Load Data Into Destination Task\OLE DB Command.Outputs[OLE DB Command Error Output]"
-                  exclusionGroup="1"
-                  isErrorOut="true"
-                  name="OLE DB Command Error Output"
-                  synchronousInputId="Package\(DFT) Load Data Into Destination Task\OLE DB Command.Inputs[OLE DB Command Input]">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\OLE DB Command.Outputs[OLE DB Command Error Output].Columns[ErrorCode]"
-                      dataType="i4"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Command.Outputs[OLE DB Command Error Output].Columns[ErrorCode]"
-                      name="ErrorCode"
-                      specialFlags="1" />
-                    <outputColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\OLE DB Command.Outputs[OLE DB Command Error Output].Columns[ErrorColumn]"
-                      dataType="i4"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Command.Outputs[OLE DB Command Error Output].Columns[ErrorColumn]"
-                      name="ErrorColumn"
-                      specialFlags="2" />
-                  </outputColumns>
-                  <externalMetadataColumns />
-                </output>
-              </outputs>
-            </component>
-            <component
-              refId="Package\(DFT) Load Data Into Destination Task\OLE DB Destination"
-              componentClassID="DTSAdapter.OLEDBDestination.3"
-              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
-              description="OLE DB Destination"
-              name="OLE DB Destination"
-              usesDispositions="true"
-              version="4">
-              <properties>
-                <property
-                  dataType="System.Int32"
-                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
-                  name="CommandTimeout">0</property>
-                <property
-                  dataType="System.String"
-                  description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[dbo].[catavolt_users_staging]</property>
-                <property
-                  dataType="System.String"
-                  description="Specifies the variable that contains the name of the database object used to open a rowset."
-                  name="OpenRowsetVariable"></property>
-                <property
-                  dataType="System.String"
-                  description="The SQL command to be executed."
-                  name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies the column code page to use when code page information is unavailable from the data source."
-                  name="DefaultCodePage">1252</property>
-                <property
-                  dataType="System.Boolean"
-                  description="Forces the use of the DefaultCodePage property value when describing character data."
-                  name="AlwaysUseDefaultCodePage">false</property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies the mode used to access the database."
-                  name="AccessMode"
-                  typeConverter="AccessMode">3</property>
-                <property
-                  dataType="System.Boolean"
-                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
-                  name="FastLoadKeepIdentity">false</property>
-                <property
-                  dataType="System.Boolean"
-                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
-                  name="FastLoadKeepNulls">false</property>
-                <property
-                  dataType="System.String"
-                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
-                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
-                  name="FastLoadMaxInsertCommitSize">2147483647</property>
-              </properties>
-              <connections>
-                <connection
-                  refId="Package\(DFT) Load Data Into Destination Task\OLE DB Destination.Connections[OleDbConnection]"
-                  connectionManagerID="Package.ConnectionManagers[10.1.1.7.xalt_dev.svc_xalt]"
-                  connectionManagerRefId="Package.ConnectionManagers[10.1.1.7.xalt_dev.svc_xalt]"
-                  description="The OLE DB runtime connection used to access the database."
-                  name="OleDbConnection" />
-              </connections>
-              <inputs>
-                <input
-                  refId="Package\(DFT) Load Data Into Destination Task\OLE DB Destination.Inputs[OLE DB Destination Input]"
-                  errorOrTruncationOperation="Insert"
-                  errorRowDisposition="FailComponent"
-                  hasSideEffects="true"
-                  name="OLE DB Destination Input">
-                  <inputColumns>
-                    <inputColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Employee_Code]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="11"
-                      cachedName="Employee_Code"
-                      externalMetadataColumnId="Package\(DFT) Load Data Into Destination Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[catavolt_spectrum_code]"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[Employee_Code]" />
-                    <inputColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Worker_Comp_Code]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="6"
-                      cachedName="Worker_Comp_Code"
-                      externalMetadataColumnId="Package\(DFT) Load Data Into Destination Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[catavolt_spectrum_workers_comp_code]"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[Worker_Comp_Code]" />
-                    <inputColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Hash]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="66"
-                      cachedName="Hash"
-                      externalMetadataColumnId="Package\(DFT) Load Data Into Destination Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[catavolt_hash]"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\Script Component.Outputs[Output 0].Columns[Hash]" />
-                  </inputColumns>
-                  <externalMetadataColumns
-                    isUsed="True">
-                    <externalMetadataColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[catavolt_spectrum_code]"
-                      codePage="1252"
-                      dataType="str"
-                      length="50"
-                      name="catavolt_spectrum_code" />
-                    <externalMetadataColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[catavolt_spectrum_workers_comp_code]"
-                      codePage="1252"
-                      dataType="str"
-                      length="10"
-                      name="catavolt_spectrum_workers_comp_code" />
-                    <externalMetadataColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[catavolt_hash]"
-                      codePage="1252"
-                      dataType="str"
-                      length="66"
-                      name="catavolt_hash" />
-                  </externalMetadataColumns>
-                </input>
-              </inputs>
-              <outputs>
-                <output
-                  refId="Package\(DFT) Load Data Into Destination Task\OLE DB Destination.Outputs[OLE DB Destination Error Output]"
-                  exclusionGroup="1"
-                  isErrorOut="true"
-                  name="OLE DB Destination Error Output"
-                  synchronousInputId="Package\(DFT) Load Data Into Destination Task\OLE DB Destination.Inputs[OLE DB Destination Input]">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
-                      dataType="i4"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
-                      name="ErrorCode"
-                      specialFlags="1" />
-                    <outputColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
-                      dataType="i4"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
-                      name="ErrorColumn"
-                      specialFlags="2" />
-                  </outputColumns>
-                  <externalMetadataColumns />
-                </output>
-              </outputs>
-            </component>
-            <component
               refId="Package\(DFT) Load Data Into Destination Task\OLE DB Source"
               componentClassID="DTSAdapter.OLEDBSource.3"
               contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
@@ -886,8 +969,10 @@ where [refTable].[catavolt_spectrum_code] = ?</property>
                   UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">select DISTINCT First_Name, Last_Name, Employee_Code,  Worker_Comp_Code, Employment_Status, Title
 from Spectrum_Employee
 where Company_Code IN ('CPR','SUB')
-and Employment_Status = 'A'
---and Employee_Code = 'STRMICJ'</property>
+--and Employment_Status IN ('T', 'A')
+--and Employee_Code = 'WILSUNL'
+and Employee_Date_List1 &gt;'2018-12-13' -- anyone hired after this date
+--and First_Name = ''</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -1430,8 +1515,9 @@ public class ScriptMain : UserComponent
     {
         // concatenate all strings. NULL values are replaced with the empty string.
         string hashSource =
-              (Row.WorkerCompCode_IsNull ? "" : Row.WorkerCompCode.ToString());
-            ;
+              (Row.WorkerCompCode_IsNull ? "" : Row.WorkerCompCode.ToString())
+       + (Row.EmploymentStatus_IsNull ? "" : Row.EmploymentStatus.ToString());
+        
 
         byte[] hashBytes = sha.ComputeHash(System.Text.UnicodeEncoding.Unicode.GetBytes(hashSource));
 
@@ -1488,11 +1574,26 @@ public class Input0Buffer: ScriptBuffer
         }
     }
 
+    public String EmploymentStatus
+    {
+        get
+        {
+            return Buffer.GetString(BufferColumnIndexes[1]);
+        }
+    }
+    public bool EmploymentStatus_IsNull
+    {
+        get
+        {
+            return IsNull(1);
+        }
+    }
+
     public String Hash
     {
         set
         {
-            this[1] = value;
+            this[2] = value;
         }
     }
     public bool Hash_IsNull
@@ -1501,7 +1602,7 @@ public class Input0Buffer: ScriptBuffer
         {
             if (value)
             {
-                SetNull(1);
+                SetNull(2);
             }
             else
             {
@@ -1804,130 +1905,104 @@ namespace SC_1c997008ccab4dd4ad849ae91a085969.Properties {
                     <arrayElement
                       dataType="System.String"><![CDATA[TVqQAAMAAAAEAAAA//8AALgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAgAAAAA4fug4AtAnNIbgBTM0hVGhpcyBwcm9ncmFtIGNhbm5vdCBiZSBydW4gaW4gRE9TIG1v
-ZGUuDQ0KJAAAAAAAAABQRQAATAEDAMKIEVwAAAAAAAAAAOAAIiALATAAABQAAAAIAAAAAAAAhjMA
+ZGUuDQ0KJAAAAAAAAABQRQAATAEDANuIElwAAAAAAAAAAOAAIiALATAAABYAAAAIAAAAAAAALjQA
 AAAgAAAAQAAAAAAAEAAgAAAAAgAABAAAAAAAAAAEAAAAAAAAAACAAAAAAgAAAAAAAAMAQIUAABAA
-ABAAAAAAEAAAEAAAAAAAABAAAAAAAAAAAAAAADQzAABPAAAAAEAAAHgEAAAAAAAAAAAAAAAAAAAA
+ABAAAAAAEAAAEAAAAAAAABAAAAAAAAAAAAAAANwzAABPAAAAAEAAAHgEAAAAAAAAAAAAAAAAAAAA
 AAAAAGAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAIAAACAAAAAAAAAAAAAAACCAAAEgAAAAAAAAAAAAAAC50ZXh0AAAAjBMAAAAgAAAAFAAAAAIA
-AAAAAAAAAAAAAAAAACAAAGAucnNyYwAAAHgEAAAAQAAAAAYAAAAWAAAAAAAAAAAAAAAAAABAAABA
-LnJlbG9jAAAMAAAAAGAAAAACAAAAHAAAAAAAAAAAAAAAAAAAQAAAQgAAAAAAAAAAAAAAAAAAAABo
-MwAAAAAAAEgAAAACAAUAJCIAAFgQAAABAAAAAAAAAHwyAAC4AAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAB4CKBAAAAoqHgIoEQAACioTMAMAdQAAAAEAABEDbwcAAAYt
-DQNvBgAABm8SAAAKKwVyAQAAcAoCewEAAAQoEwAACgZvFAAACm8VAAAKC3MWAAAKDBYNKxwIBwmP
-HgAAAXIDAABwKBcAAApvGAAACiYJF1gNCQeOaTLeA3IJAABwCG8SAAAKKBkAAApvCAAABipKAnMa
-AAAKfQEAAAQCKAwAAAYqKgIDBAUoGwAACipSAnscAAAKAnsdAAAKFpRvHgAACioiAhYoHwAACiom
-AhcDKCAAAAoqWgMsCAIXKCEAAAoqcg8AAHBzIgAACnoeAigjAAAKKh4CKCQAAAoqfgIoJQAACgIC
-cxAAAAZ9AgAABAICcxEAAAZ9AwAABCqSBHKsAABwGm8mAAAKLBUCBQIDKCcAAAoOBHMFAAAGbw4A
-AAYqSisHAgNvDwAABgNvCgAABi3xKgYqOgIoKAAACgIDfQQAAAQqOgIoKAAACgIDfQUAAAQqHgIo
-KAAACiqufgYAAAQtHnK8AABw0AcAAAIoKQAACm8qAAAKcysAAAqABgAABH4GAAAEKhp+BwAABCoe
-AoAHAAAEKhp+CAAABCoeAigsAAAKKi5zFwAABoAIAAAEKkJTSkIBAAEAAAAAAAwAAAB2NC4wLjMw
-MzE5AAAAAAUAbAAAAOAFAAAjfgAATAYAAPgGAAAjU3RyaW5ncwAAAABEDQAAMAEAACNVUwB0DgAA
-EAAAACNHVUlEAAAAhA4AANQBAAAjQmxvYgAAAAAAAAACAAABVxWiAQkBAAAA+gEzABYAAAEAAAAl
-AAAACAAAAAgAAAAYAAAADwAAACwAAAAQAAAAAQAAAAMAAAAHAAAACAAAAAEAAAAFAAAAAQAAAAAA
-VgMBAAAAAAAGACEC9wQGALUC9wQGAG0B5AQPAGsFAAAGAJoBDwQGAAQCDwQGAOUBDwQGAJwCDwQG
-AEECDwQGAFoCDwQGALEBDwQGAMwB/gIKAHUCrgAGAAEAzgYGAIwEowYKALYErgAOAKcErgAKAFgE
-rgAKAEEGrgAGAAQGuQMGAFAB5AQGAMcEFwUGAEwE+gMSACABQAMSAIEBQAMSAAgB5QMGADUB9wQG
-APUCowYGAMADzgYGAOoCuQMGACQDuQMWAHAEzgYGACEEuQMGADsEuQMGAM8AuQMGAIAAuQMGAO8G
-DwQAAAAALAAAAAAAAQABAAEAEADaAwAAEAABAAEAAQAQAJoEAABBAAIABQABABAAIwYAAE0AAgAM
-AAEAEADxBQAAUQAEABAAAQAQAKkFAABRAAUAEQAAABAAHgV6BVEABgASAAABEADhBXoFaQAIABYA
-AQA9AKgABgDxBawABgCpBbAAAQAxBrQAAQAxBrQAEQDOA7gAEQD4ALwAEQBRAMAAUCAAAAAAxgDT
-AgYAAQBYIAAAAADGAN4CBgABAGAgAAAAAMYArwbEAAEA4SAAAAAAhhjXBAYAAgD0IAAAAACGGNcE
-SwACAP8gAAAAAIYIYQAkAAUAFCEAAAAAhgh+A20ABQAdIQAAAACGCCsDEAAFACchAAAAAIYImAPK
-AAYAPiEAAAAAhgDGBm0ABwBGIQAAAACGAAsGbQAHAE4hAAAAAIYY1wQGAAcAbiEAAAAAxgCWBs8A
-BwCTIQAAAADGAY8GxAALAKYhAAAAAMYBrwbEAAwAqCEAAAAAhhjXBNkADQC3IQAAAACGGNcE2QAO
-AMYhAAAAAIMY1wQGAA8AziEAAAAAkwjDBN8ADwD6IQAAAACTCOAA5AAPAAEiAAAAAJMI7ADpAA8A
-CSIAAAAAlggXBu8AEAAQIgAAAACGGNcEBgAQABgiAAAAAJEY3QT0ABAAAAABAMoGAAABALwEAAAC
-ALwFAAADAGYEAAABAO8CAAABAO8CAAABADUAAAACAKQAAAADALwEAAAEAGYEAAABALwEAAABAMoG
-AAABAEcGAAABAEcGAAABAO8CCQDXBAEAEQDXBAYAGQDXBAoAKQDXBBAAMQDXBBAAOQDXBBAAQQDX
-BBAASQDXBBAAUQDXBBAAWQDXBBAAYQDXBBAAaQDXBAYAqQDXBAYAyQDXBBUA2QDXBAYAmQDTAgYA
-mQDeAgYAoQAYAyQA4QB0ACgA4QCzBS0A6QA0AzMAeQDXBAYA8QAYAzoAeQBKAD8A+QD9BUUAAQHX
-BAYAgQDXBEsAgQC8BFUAgQC8BVkAiQAhA10AgQChA2IAgQCwA2cAgQCoAwEACQHXBBAAgQDGBm0A
-gQALBm0AmQDXBAYA+QDqBXEAmQDQBXkAoQDXBAYAGQGSAH8AGQHrBogAsQDXBI4A0QDXBAYALgAL
-AA8BLgATABgBLgAbADcBLgAjAEABLgArAGkBLgAzAGkBLgA7AGkBLgBDAEABLgBLAG8BLgBTAGkB
-LgBbAIYBQwBjAM4BqQBzADcByQBzADcB4wBrAM4BAQF7AM4BGwADAAEABwAFAAgABwAAAGUA+AAA
-AIID/AAAADsD+AAAAJwD/AAAAMcEAAEAAAABBQEAABsGCgECAAYAAwACAAcABQABAAgABwABAAkA
-CQACABMACwACABQADQABABUADQACABYADwAEgAAAAQAAAAgbcXIAAAAAAAAIAAAABAAAAAAAAAAA
-AAAAlgBBAAAAAAALAAAAAAAAAAAAAACfAFEGAAAAAAsAAAAAAAAAAAAAAJ8AbgYAAAAABAAAAAAA
-AAAAAAAAlgC5AwAAAAAEAAAAAAAAAAAAAACWANQAAAAAAAAAAAABAAAAKAUAAAAAAAAAU0hBMjU2
-AFNDXzFjOTk3MDA4Y2NhYjRkZDRhZDg0OWFlOTFhMDg1OTY5ADxNb2R1bGU+AElucHV0SUQAc2hh
-AG1zY29ybGliAEFwcGVuZABkZWZhdWx0SW5zdGFuY2UAZ2V0X1dvcmtlckNvbXBDb2RlAGdldF9V
-bmljb2RlAFJ1bnRpbWVUeXBlSGFuZGxlAEdldFR5cGVGcm9tSGFuZGxlAElucHV0TmFtZQBNaWNy
-b3NvZnQuU3FsU2VydmVyLkR0cy5QaXBlbGluZQBUeXBlAFN5c3RlbS5Db3JlAGdldF9DdWx0dXJl
-AHNldF9DdWx0dXJlAHJlc291cmNlQ3VsdHVyZQBBcHBsaWNhdGlvblNldHRpbmdzQmFzZQBFZGl0
-b3JCcm93c2FibGVTdGF0ZQBDb21waWxlckdlbmVyYXRlZEF0dHJpYnV0ZQBEZWJ1Z2dlck5vblVz
-ZXJDb2RlQXR0cmlidXRlAERlYnVnZ2FibGVBdHRyaWJ1dGUARWRpdG9yQnJvd3NhYmxlQXR0cmli
-dXRlAEFzc2VtYmx5VGl0bGVBdHRyaWJ1dGUAQXNzZW1ibHlUcmFkZW1hcmtBdHRyaWJ1dGUAVGFy
-Z2V0RnJhbWV3b3JrQXR0cmlidXRlAEFzc2VtYmx5Q29uZmlndXJhdGlvbkF0dHJpYnV0ZQBBc3Nl
-bWJseURlc2NyaXB0aW9uQXR0cmlidXRlAENvbXBpbGF0aW9uUmVsYXhhdGlvbnNBdHRyaWJ1dGUA
-QXNzZW1ibHlQcm9kdWN0QXR0cmlidXRlAEFzc2VtYmx5Q29weXJpZ2h0QXR0cmlidXRlAFNTSVNT
-Y3JpcHRDb21wb25lbnRFbnRyeVBvaW50QXR0cmlidXRlAEFzc2VtYmx5Q29tcGFueUF0dHJpYnV0
-ZQBSdW50aW1lQ29tcGF0aWJpbGl0eUF0dHJpYnV0ZQBQcmVFeGVjdXRlAFBvc3RFeGVjdXRlAEJ5
-dGUAdmFsdWUARW5jb2RpbmcAU3lzdGVtLlJ1bnRpbWUuVmVyc2lvbmluZwBUb1N0cmluZwBHZXRT
-dHJpbmcAc2V0X0hhc2gAQ29tcHV0ZUhhc2gAU3lzdGVtLkNvbXBvbmVudE1vZGVsAFNDXzFjOTk3
-MDA4Y2NhYjRkZDRhZDg0OWFlOTFhMDg1OTY5LmRsbABnZXRfV29ya2VyQ29tcENvZGVfSXNOdWxs
-AHNldF9IYXNoX0lzTnVsbABTZXROdWxsAHNldF9JdGVtAFN5c3RlbQBIYXNoQWxnb3JpdGhtAHJl
-c291cmNlTWFuAFNjcmlwdE1haW4AU3lzdGVtLkNvbmZpZ3VyYXRpb24AU3lzdGVtLkdsb2JhbGl6
-YXRpb24AU3lzdGVtLlJlZmxlY3Rpb24ASW52YWxpZE9wZXJhdGlvbkV4Y2VwdGlvbgBTdHJpbmdD
-b21wYXJpc29uAEN1bHR1cmVJbmZvAE91dHB1dE5hbWVNYXAAT3V0cHV0TWFwAFNIQTI1NkNyeXB0
-b1NlcnZpY2VQcm92aWRlcgBTdHJpbmdCdWlsZGVyAElucHV0MEJ1ZmZlcgBQaXBlbGluZUJ1ZmZl
-cgBTY3JpcHRCdWZmZXIAZ2V0X1Jlc291cmNlTWFuYWdlcgAuY3RvcgAuY2N0b3IAU3lzdGVtLkRp
-YWdub3N0aWNzAFN5c3RlbS5SdW50aW1lLkNvbXBpbGVyU2VydmljZXMAU3lzdGVtLlJlc291cmNl
-cwBTQ18xYzk5NzAwOGNjYWI0ZGQ0YWQ4NDlhZTkxYTA4NTk2OS5Qcm9wZXJ0aWVzLlJlc291cmNl
-cy5yZXNvdXJjZXMARGVidWdnaW5nTW9kZXMAU0NfMWM5OTcwMDhjY2FiNGRkNGFkODQ5YWU5MWEw
-ODU5NjkuUHJvcGVydGllcwBWYXJpYWJsZXMAR2V0Qnl0ZXMAQnVmZmVyQ29sdW1uSW5kZXhlcwBH
-ZXRDb2x1bW5JbmRleGVzAFNldHRpbmdzAEVxdWFscwBDb25uZWN0aW9ucwBDb25jYXQAT2JqZWN0
-AEVuZE9mUm93c2V0AGdldF9EZWZhdWx0AFVzZXJDb21wb25lbnQAUGFyZW50Q29tcG9uZW50AFNj
-cmlwdENvbXBvbmVudABNaWNyb3NvZnQuU3FsU2VydmVyLlR4U2NyaXB0AE1pY3Jvc29mdC5TcWxT
-ZXJ2ZXIuUGlwZWxpbmVIb3N0AElucHV0MF9Qcm9jZXNzSW5wdXQAU3lzdGVtLlRleHQASW5wdXQw
-X1Byb2Nlc3NJbnB1dFJvdwBOZXh0Um93AFN5c3RlbS5TZWN1cml0eS5DcnlwdG9ncmFwaHkAZ2V0
-X0Fzc2VtYmx5AAABAAVYADIAAAUwAHgAAICbSQBzAE4AdQBsAGwAIABwAHIAbwBwAGUAcgB0AHkA
-IABjAGEAbgBuAG8AdAAgAGIAZQAgAHMAZQB0ACAAdABvACAARgBhAGwAcwBlAC4AIABBAHMAcwBp
-AGcAbgAgAGEAIAB2AGEAbAB1AGUAIAB0AG8AIAB0AGgAZQAgAGMAbwBsAHUAbQBuACAAaQBuAHMA
-dABlAGEAZAAuAAAPSQBuAHAAdQB0ACAAMAAAcVMAQwBfADEAYwA5ADkANwAwADAAOABjAGMAYQBi
-ADQAZABkADQAYQBkADgANAA5AGEAZQA5ADEAYQAwADgANQA5ADYAOQAuAFAAcgBvAHAAZQByAHQA
-aQBlAHMALgBSAGUAcwBvAHUAcgBjAGUAcwAAAAAoT0G1KdsnQ6Lm6OthSamlAAQgAQEIAyAAAQUg
-AQEREQQgAQEOBSABARFhCAcEDh0FEj0IAyAADgQAABJxBSABHQUOBiABHQUdBQQgAQ4OBSABEj0O
-BQACDg4OCSADARJFHQgSSQMGEkUDBh0IBCABDggEIAECCAUgAgEIHAMgAAIHIAICDhGAiQUgAR0I
-CAgAARKAjRGAkQUgABKAlQcgAgEOEoCVCLd6XFYZNOCJCImEXc2AgMyRAwYSOQMGEhQDBhIYAwYS
-TQMGElkDBhJdAwYSIAUgAQESDAQgAQECCSAEAQgOEkUSSQUgAQESTQQAABJZBAAAEl0FAAEBEl0E
-AAASIAMAAAEDKAAOAygAAgQIABJZBAgAEl0ECAASIAgBAAgAAAAAAB4BAAEAVAIWV3JhcE5vbkV4
-Y2VwdGlvblRocm93cwEIAQACAAAAAAAoAQAjU0NfMWM5OTcwMDhjY2FiNGRkNGFkODQ5YWU5MWEw
-ODU5NjkAAAUBAAAAABYBABFDb3B5cmlnaHQgQCAgMjAxOAAARwEAGi5ORVRGcmFtZXdvcmssVmVy
-c2lvbj12NC4wAQBUDhRGcmFtZXdvcmtEaXNwbGF5TmFtZRAuTkVUIEZyYW1ld29yayA0BAEAAAAA
-tAAAAM7K774BAAAAkQAAAGxTeXN0ZW0uUmVzb3VyY2VzLlJlc291cmNlUmVhZGVyLCBtc2Nvcmxp
-YiwgVmVyc2lvbj00LjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1
-YzU2MTkzNGUwODkjU3lzdGVtLlJlc291cmNlcy5SdW50aW1lUmVzb3VyY2VTZXQCAAAAAAAAAAAA
-AABQQURQQURQtAAAAFwzAAAAAAAAAAAAAHYzAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAABoMwAA
-AAAAAAAAAAAAAF9Db3JEbGxNYWluAG1zY29yZWUuZGxsAAAAAAD/JQAgABAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAQAQAAAAGAAAgAAAAAAAAAAAAAAAAAAAAQABAAAAMAAAgAAAAAAAAAAAAAAAAAAAAQAAAAAA
-SAAAAFhAAAAaBAAAAAAAAAAAAAAaBDQAAABWAFMAXwBWAEUAUgBTAEkATwBOAF8ASQBOAEYATwAA
-AAAAvQTv/gAAAQAAAAEAcXIIGwAAAQBxcggbPwAAAAAAAAAEAAAAAgAAAAAAAAAAAAAAAAAAAEQA
-AAABAFYAYQByAEYAaQBsAGUASQBuAGYAbwAAAAAAJAAEAAAAVAByAGEAbgBzAGwAYQB0AGkAbwBu
-AAAAAAAAALAEegMAAAEAUwB0AHIAaQBuAGcARgBpAGwAZQBJAG4AZgBvAAAAVgMAAAEAMAAwADAA
-MAAwADQAYgAwAAAAGgABAAEAQwBvAG0AbQBlAG4AdABzAAAAAAAAACIAAQABAEMAbwBtAHAAYQBu
-AHkATgBhAG0AZQAAAAAAAAAAAHAAJAABAEYAaQBsAGUARABlAHMAYwByAGkAcAB0AGkAbwBuAAAA
-AABTAEMAXwAxAGMAOQA5ADcAMAAwADgAYwBjAGEAYgA0AGQAZAA0AGEAZAA4ADQAOQBhAGUAOQAx
-AGEAMAA4ADUAOQA2ADkAAAA+AA8AAQBGAGkAbABlAFYAZQByAHMAaQBvAG4AAAAAADEALgAwAC4A
-NgA5ADIAMAAuADIAOQAyADkANwAAAAAAcAAoAAEASQBuAHQAZQByAG4AYQBsAE4AYQBtAGUAAABT
-AEMAXwAxAGMAOQA5ADcAMAAwADgAYwBjAGEAYgA0AGQAZAA0AGEAZAA4ADQAOQBhAGUAOQAxAGEA
-MAA4ADUAOQA2ADkALgBkAGwAbAAAAEgAEgABAEwAZQBnAGEAbABDAG8AcAB5AHIAaQBnAGgAdAAA
-AEMAbwBwAHkAcgBpAGcAaAB0ACAAQAAgACAAMgAwADEAOAAAACoAAQABAEwAZQBnAGEAbABUAHIA
-YQBkAGUAbQBhAHIAawBzAAAAAAAAAAAAeAAoAAEATwByAGkAZwBpAG4AYQBsAEYAaQBsAGUAbgBh
-AG0AZQAAAFMAQwBfADEAYwA5ADkANwAwADAAOABjAGMAYQBiADQAZABkADQAYQBkADgANAA5AGEA
-ZQA5ADEAYQAwADgANQA5ADYAOQAuAGQAbABsAAAAaAAkAAEAUAByAG8AZAB1AGMAdABOAGEAbQBl
-AAAAAABTAEMAXwAxAGMAOQA5ADcAMAAwADgAYwBjAGEAYgA0AGQAZAA0AGEAZAA4ADQAOQBhAGUA
-OQAxAGEAMAA4ADUAOQA2ADkAAABCAA8AAQBQAHIAbwBkAHUAYwB0AFYAZQByAHMAaQBvAG4AAAAx
-AC4AMAAuADYAOQAyADAALgAyADkAMgA5ADcAAAAAAEYADwABAEEAcwBzAGUAbQBiAGwAeQAgAFYA
-ZQByAHMAaQBvAG4AAAAxAC4AMAAuADYAOQAyADAALgAyADkAMgA5ADcAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwAAAMAAAAiDMAAAAA
+AAAAIAAACAAAAAAAAAAAAAAACCAAAEgAAAAAAAAAAAAAAC50ZXh0AAAANBQAAAAgAAAAFgAAAAIA
+AAAAAAAAAAAAAAAAACAAAGAucnNyYwAAAHgEAAAAQAAAAAYAAAAYAAAAAAAAAAAAAAAAAABAAABA
+LnJlbG9jAAAMAAAAAGAAAAACAAAAHgAAAAAAAAAAAAAAAAAAQAAAQgAAAAAAAAAAAAAAAAAAAAAQ
+NAAAAAAAAEgAAAACAAUAZCIAAMAQAAABAAAAAAAAACQzAAC4AAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAB4CKBAAAAoqHgIoEQAACioTMAMAlAAAAAEAABEDbwcAAAYt
+DQNvBgAABm8SAAAKKwVyAQAAcANvCQAABi0NA28IAAAGbxIAAAorBXIBAABwKBMAAAoKAnsBAAAE
+KBQAAAoGbxUAAApvFgAACgtzFwAACgwWDSscCAcJjx8AAAFyAwAAcCgYAAAKbxkAAAomCRdYDQkH
+jmky3gNyCQAAcAhvEgAACigTAAAKbwoAAAYqSgJzGgAACn0BAAAEAigOAAAGKioCAwQFKBsAAAoq
+UgJ7HAAACgJ7HQAAChaUbx4AAAoqIgIWKB8AAAoqUgJ7HAAACgJ7HQAACheUbx4AAAoqIgIXKB8A
+AAoqJgIYAyggAAAKKloDLAgCGCghAAAKKnIPAABwcyIAAAp6HgIoIwAACioeAigkAAAKKn4CKCUA
+AAoCAnMSAAAGfQIAAAQCAnMTAAAGfQMAAAQqkgRyrAAAcBpvJgAACiwVAgUCAygnAAAKDgRzBQAA
+Bm8QAAAGKkorBwIDbxEAAAYDbwwAAAYt8SoGKjoCKCgAAAoCA30EAAAEKjoCKCgAAAoCA30FAAAE
+Kh4CKCgAAAoqrn4GAAAELR5yvAAAcNAHAAACKCkAAApvKgAACnMrAAAKgAYAAAR+BgAABCoafgcA
+AAQqHgKABwAABCoafggAAAQqHgIoLAAACioucxkAAAaACAAABCoAAABCU0pCAQABAAAAAAAMAAAA
+djQuMC4zMDMxOQAAAAAFAGwAAAAUBgAAI34AAIAGAAAsBwAAI1N0cmluZ3MAAAAArA0AADABAAAj
+VVMA3A4AABAAAAAjR1VJRAAAAOwOAADUAQAAI0Jsb2IAAAAAAAAAAgAAAVcVogEJAQAAAPoBMwAW
+AAABAAAAJQAAAAgAAAAIAAAAGgAAAA8AAAAsAAAAEAAAAAEAAAADAAAACQAAAAoAAAABAAAABQAA
+AAEAAAAAAFYDAQAAAAAABgAhAhMFBgC1AhMFBgBtAQAFDwCHBQAABgCaASsEBgAEAisEBgDlASsE
+BgCcAisEBgBBAisEBgBaAisEBgCxASsEBgDMAf4CCgB1Aq4ABgABAP8GBgCoBNQGCgDSBK4ADgDD
+BK4ACgB0BK4ACgByBq4ABgA1BtUDBgBQAQAFBgDjBDMFBgBoBBYEEgAgAUADEgCBAUADEgAIAQEE
+BgA1ARMFBgAkA9UDBgD1AtQGBgDcA/8GBgDqAtUDFgCMBP8GBgA9BNUDBgBXBNUDBgDPANUDBgCA
+ANUDBgAgBysEAAAAACwAAAAAAAEAAQABABAA9gMAABAAAQABAAEAEAC2BAAAQQACAAUAAQAQAFQG
+AABNAAIADgABABAADQYAAFEABAASAAEAEADFBQAAUQAFABMAAAAQADoFlgVRAAYAFAAAARAA/QWW
+BWkACAAYAAEAPQCoAAYADQasAAYAxQWwAAEAYga0AAEAYga0ABEA6gO4ABEA+AC8ABEAUQDAAFAg
+AAAAAMYA0wIGAAEAWCAAAAAAxgDeAgYAAQBgIAAAAADGAOAGxAABAAAhAAAAAIYY8wQGAAIAEyEA
+AAAAhhjzBEsAAgAeIQAAAACGCGEAJAAFADMhAAAAAIYIfgNtAAUAPCEAAAAAhggZBiQABQBRIQAA
+AACGCKgDbQAFAFohAAAAAIYIKwMQAAUAZCEAAAAAhgiYA8oABgB7IQAAAACGAPcGbQAHAIMhAAAA
+AIYAPAZtAAcAiyEAAAAAhhjzBAYABwCrIQAAAADGAMcGzwAHANAhAAAAAMYBwAbEAAsA4yEAAAAA
+xgHgBsQADADlIQAAAACGGPME2QANAPQhAAAAAIYY8wTZAA4AAyIAAAAAgxjzBAYADwALIgAAAACT
+CN8E3wAPADciAAAAAJMI4ADkAA8APiIAAAAAkwjsAOkADwBGIgAAAACWCEgG7wAQAE0iAAAAAIYY
+8wQGABAAVSIAAAAAkRj5BPQAEAAAAAEA+wYAAAEA2AQAAAIA2AUAAAMAggQAAAEA7wIAAAEA7wIA
+AAEANQAAAAIApAAAAAMA2AQAAAQAggQAAAEA2AQAAAEA+wYAAAEAeAYAAAEAeAYAAAEA7wIJAPME
+AQARAPMEBgAZAPMECgApAPMEEAAxAPMEEAA5APMEEABBAPMEEABJAPMEEABRAPMEEABZAPMEEABh
+APMEEABpAPMEBgCpAPMEBgDJAPMEFQDZAPMEBgCZANMCBgCZAN4CBgChABgDJADhAC4GKADpAHQA
+LgDpAM8FMwDxADQDOQB5APMEBgD5ABgDQAB5AEoARQABAfMEBgCBAPMESwCBANgEVQCBANgFWQCJ
+ACEDXQCBAL0DYgCBAMwDZwCBAMQDAQAJAfMEEACBAPcGbQCBADwGbQCZAPMEBgDhAAYGcQCZAOwF
+eQChAPMEBgAZAZIAfwAZARwHiACxAPMEjgDRAPMEBgAuAAsADwEuABMAGAEuABsANwEuACMAQAEu
+ACsAaQEuADMAaQEuADsAaQEuAEMAQAEuAEsAbwEuAFMAaQEuAFsAhgFDAGMAzgHjAGsAzgHpAHMA
+NwEBAXsAzgEJAXMANwEbAAMAAQAHAAcACAAJAAAAZQD4AAAAggP8AAAAHQb4AAAArAP8AAAAOwP4
+AAAAnAP8AAAA4wQAAQAAAAEFAQAATAYKAQIABgADAAIABwAFAAIACAAHAAIACQAJAAEACgALAAEA
+CwANAAIAFQAPAAIAFgARAAEAFwARAAIAGAATAASAAAABAAAACRu9SQAAAAAAAAgAAAAEAAAAAAAA
+AAAAAACWAEEAAAAAAAsAAAAAAAAAAAAAAJ8AggYAAAAACwAAAAAAAAAAAAAAnwCfBgAAAAAEAAAA
+AAAAAAAAAACWANUDAAAAAAQAAAAAAAAAAAAAAJYA1AAAAAAAAAAAAAEAAABEBQAAAAAAAABTSEEy
+NTYAU0NfMWM5OTcwMDhjY2FiNGRkNGFkODQ5YWU5MWEwODU5NjkAPE1vZHVsZT4ASW5wdXRJRABz
+aGEAbXNjb3JsaWIAQXBwZW5kAGRlZmF1bHRJbnN0YW5jZQBnZXRfV29ya2VyQ29tcENvZGUAZ2V0
+X1VuaWNvZGUAUnVudGltZVR5cGVIYW5kbGUAR2V0VHlwZUZyb21IYW5kbGUASW5wdXROYW1lAE1p
+Y3Jvc29mdC5TcWxTZXJ2ZXIuRHRzLlBpcGVsaW5lAFR5cGUAU3lzdGVtLkNvcmUAZ2V0X0N1bHR1
+cmUAc2V0X0N1bHR1cmUAcmVzb3VyY2VDdWx0dXJlAEFwcGxpY2F0aW9uU2V0dGluZ3NCYXNlAEVk
+aXRvckJyb3dzYWJsZVN0YXRlAENvbXBpbGVyR2VuZXJhdGVkQXR0cmlidXRlAERlYnVnZ2VyTm9u
+VXNlckNvZGVBdHRyaWJ1dGUARGVidWdnYWJsZUF0dHJpYnV0ZQBFZGl0b3JCcm93c2FibGVBdHRy
+aWJ1dGUAQXNzZW1ibHlUaXRsZUF0dHJpYnV0ZQBBc3NlbWJseVRyYWRlbWFya0F0dHJpYnV0ZQBU
+YXJnZXRGcmFtZXdvcmtBdHRyaWJ1dGUAQXNzZW1ibHlDb25maWd1cmF0aW9uQXR0cmlidXRlAEFz
+c2VtYmx5RGVzY3JpcHRpb25BdHRyaWJ1dGUAQ29tcGlsYXRpb25SZWxheGF0aW9uc0F0dHJpYnV0
+ZQBBc3NlbWJseVByb2R1Y3RBdHRyaWJ1dGUAQXNzZW1ibHlDb3B5cmlnaHRBdHRyaWJ1dGUAU1NJ
+U1NjcmlwdENvbXBvbmVudEVudHJ5UG9pbnRBdHRyaWJ1dGUAQXNzZW1ibHlDb21wYW55QXR0cmli
+dXRlAFJ1bnRpbWVDb21wYXRpYmlsaXR5QXR0cmlidXRlAFByZUV4ZWN1dGUAUG9zdEV4ZWN1dGUA
+Qnl0ZQB2YWx1ZQBFbmNvZGluZwBTeXN0ZW0uUnVudGltZS5WZXJzaW9uaW5nAFRvU3RyaW5nAEdl
+dFN0cmluZwBzZXRfSGFzaABDb21wdXRlSGFzaABTeXN0ZW0uQ29tcG9uZW50TW9kZWwAU0NfMWM5
+OTcwMDhjY2FiNGRkNGFkODQ5YWU5MWEwODU5NjkuZGxsAGdldF9Xb3JrZXJDb21wQ29kZV9Jc051
+bGwAc2V0X0hhc2hfSXNOdWxsAGdldF9FbXBsb3ltZW50U3RhdHVzX0lzTnVsbABTZXROdWxsAHNl
+dF9JdGVtAFN5c3RlbQBIYXNoQWxnb3JpdGhtAHJlc291cmNlTWFuAFNjcmlwdE1haW4AU3lzdGVt
+LkNvbmZpZ3VyYXRpb24AU3lzdGVtLkdsb2JhbGl6YXRpb24AU3lzdGVtLlJlZmxlY3Rpb24ASW52
+YWxpZE9wZXJhdGlvbkV4Y2VwdGlvbgBTdHJpbmdDb21wYXJpc29uAEN1bHR1cmVJbmZvAE91dHB1
+dE5hbWVNYXAAT3V0cHV0TWFwAFNIQTI1NkNyeXB0b1NlcnZpY2VQcm92aWRlcgBTdHJpbmdCdWls
+ZGVyAElucHV0MEJ1ZmZlcgBQaXBlbGluZUJ1ZmZlcgBTY3JpcHRCdWZmZXIAZ2V0X1Jlc291cmNl
+TWFuYWdlcgAuY3RvcgAuY2N0b3IAU3lzdGVtLkRpYWdub3N0aWNzAFN5c3RlbS5SdW50aW1lLkNv
+bXBpbGVyU2VydmljZXMAU3lzdGVtLlJlc291cmNlcwBTQ18xYzk5NzAwOGNjYWI0ZGQ0YWQ4NDlh
+ZTkxYTA4NTk2OS5Qcm9wZXJ0aWVzLlJlc291cmNlcy5yZXNvdXJjZXMARGVidWdnaW5nTW9kZXMA
+U0NfMWM5OTcwMDhjY2FiNGRkNGFkODQ5YWU5MWEwODU5NjkuUHJvcGVydGllcwBWYXJpYWJsZXMA
+R2V0Qnl0ZXMAQnVmZmVyQ29sdW1uSW5kZXhlcwBHZXRDb2x1bW5JbmRleGVzAFNldHRpbmdzAEVx
+dWFscwBDb25uZWN0aW9ucwBnZXRfRW1wbG95bWVudFN0YXR1cwBDb25jYXQAT2JqZWN0AEVuZE9m
+Um93c2V0AGdldF9EZWZhdWx0AFVzZXJDb21wb25lbnQAUGFyZW50Q29tcG9uZW50AFNjcmlwdENv
+bXBvbmVudABNaWNyb3NvZnQuU3FsU2VydmVyLlR4U2NyaXB0AE1pY3Jvc29mdC5TcWxTZXJ2ZXIu
+UGlwZWxpbmVIb3N0AElucHV0MF9Qcm9jZXNzSW5wdXQAU3lzdGVtLlRleHQASW5wdXQwX1Byb2Nl
+c3NJbnB1dFJvdwBOZXh0Um93AFN5c3RlbS5TZWN1cml0eS5DcnlwdG9ncmFwaHkAZ2V0X0Fzc2Vt
+Ymx5AAAAAAABAAVYADIAAAUwAHgAAICbSQBzAE4AdQBsAGwAIABwAHIAbwBwAGUAcgB0AHkAIABj
+AGEAbgBuAG8AdAAgAGIAZQAgAHMAZQB0ACAAdABvACAARgBhAGwAcwBlAC4AIABBAHMAcwBpAGcA
+bgAgAGEAIAB2AGEAbAB1AGUAIAB0AG8AIAB0AGgAZQAgAGMAbwBsAHUAbQBuACAAaQBuAHMAdABl
+AGEAZAAuAAAPSQBuAHAAdQB0ACAAMAAAcVMAQwBfADEAYwA5ADkANwAwADAAOABjAGMAYQBiADQA
+ZABkADQAYQBkADgANAA5AGEAZQA5ADEAYQAwADgANQA5ADYAOQAuAFAAcgBvAHAAZQByAHQAaQBl
+AHMALgBSAGUAcwBvAHUAcgBjAGUAcwAAAADkephpPsTQRq91ttZ21T7eAAQgAQEIAyAAAQUgAQER
+EQQgAQEOBSABARFhCAcEDh0FEj0IAyAADgUAAg4ODgQAABJ1BSABHQUOBiABHQUdBQQgAQ4OBSAB
+Ej0OCSADARJFHQgSSQMGEkUDBh0IBCABDggEIAECCAUgAgEIHAMgAAIHIAICDhGAiQUgAR0ICAgA
+ARKAjRGAkQUgABKAlQcgAgEOEoCVCLd6XFYZNOCJCImEXc2AgMyRAwYSOQMGEhQDBhIYAwYSTQMG
+ElkDBhJdAwYSIAUgAQESDAQgAQECCSAEAQgOEkUSSQUgAQESTQQAABJZBAAAEl0FAAEBEl0EAAAS
+IAMAAAEDKAAOAygAAgQIABJZBAgAEl0ECAASIAgBAAgAAAAAAB4BAAEAVAIWV3JhcE5vbkV4Y2Vw
+dGlvblRocm93cwEIAQACAAAAAAAoAQAjU0NfMWM5OTcwMDhjY2FiNGRkNGFkODQ5YWU5MWEwODU5
+NjkAAAUBAAAAABYBABFDb3B5cmlnaHQgQCAgMjAxOAAARwEAGi5ORVRGcmFtZXdvcmssVmVyc2lv
+bj12NC4wAQBUDhRGcmFtZXdvcmtEaXNwbGF5TmFtZRAuTkVUIEZyYW1ld29yayA0BAEAAAAAtAAA
+AM7K774BAAAAkQAAAGxTeXN0ZW0uUmVzb3VyY2VzLlJlc291cmNlUmVhZGVyLCBtc2NvcmxpYiwg
+VmVyc2lvbj00LjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2
+MTkzNGUwODkjU3lzdGVtLlJlc291cmNlcy5SdW50aW1lUmVzb3VyY2VTZXQCAAAAAAAAAAAAAABQ
+QURQQURQtAAAAAQ0AAAAAAAAAAAAAB40AAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQNAAAAAAA
+AAAAAAAAAF9Db3JEbGxNYWluAG1zY29yZWUuZGxsAAAAAAD/JQAgABAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -1936,7 +2011,42 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
+AAABABAAAAAYAACAAAAAAAAAAAAAAAAAAAABAAEAAAAwAACAAAAAAAAAAAAAAAAAAAABAAAAAABI
+AAAAWEAAABoEAAAAAAAAAAAAABoENAAAAFYAUwBfAFYARQBSAFMASQBPAE4AXwBJAE4ARgBPAAAA
+AAC9BO/+AAABAAAAAQC9SQkbAAABAL1JCRs/AAAAAAAAAAQAAAACAAAAAAAAAAAAAAAAAAAARAAA
+AAEAVgBhAHIARgBpAGwAZQBJAG4AZgBvAAAAAAAkAAQAAABUAHIAYQBuAHMAbABhAHQAaQBvAG4A
+AAAAAAAAsAR6AwAAAQBTAHQAcgBpAG4AZwBGAGkAbABlAEkAbgBmAG8AAABWAwAAAQAwADAAMAAw
+ADAANABiADAAAAAaAAEAAQBDAG8AbQBtAGUAbgB0AHMAAAAAAAAAIgABAAEAQwBvAG0AcABhAG4A
+eQBOAGEAbQBlAAAAAAAAAAAAcAAkAAEARgBpAGwAZQBEAGUAcwBjAHIAaQBwAHQAaQBvAG4AAAAA
+AFMAQwBfADEAYwA5ADkANwAwADAAOABjAGMAYQBiADQAZABkADQAYQBkADgANAA5AGEAZQA5ADEA
+YQAwADgANQA5ADYAOQAAAD4ADwABAEYAaQBsAGUAVgBlAHIAcwBpAG8AbgAAAAAAMQAuADAALgA2
+ADkAMgAxAC4AMQA4ADgANwA3AAAAAABwACgAAQBJAG4AdABlAHIAbgBhAGwATgBhAG0AZQAAAFMA
+QwBfADEAYwA5ADkANwAwADAAOABjAGMAYQBiADQAZABkADQAYQBkADgANAA5AGEAZQA5ADEAYQAw
+ADgANQA5ADYAOQAuAGQAbABsAAAASAASAAEATABlAGcAYQBsAEMAbwBwAHkAcgBpAGcAaAB0AAAA
+QwBvAHAAeQByAGkAZwBoAHQAIABAACAAIAAyADAAMQA4AAAAKgABAAEATABlAGcAYQBsAFQAcgBh
+AGQAZQBtAGEAcgBrAHMAAAAAAAAAAAB4ACgAAQBPAHIAaQBnAGkAbgBhAGwARgBpAGwAZQBuAGEA
+bQBlAAAAUwBDAF8AMQBjADkAOQA3ADAAMAA4AGMAYwBhAGIANABkAGQANABhAGQAOAA0ADkAYQBl
+ADkAMQBhADAAOAA1ADkANgA5AC4AZABsAGwAAABoACQAAQBQAHIAbwBkAHUAYwB0AE4AYQBtAGUA
+AAAAAFMAQwBfADEAYwA5ADkANwAwADAAOABjAGMAYQBiADQAZABkADQAYQBkADgANAA5AGEAZQA5
+ADEAYQAwADgANQA5ADYAOQAAAEIADwABAFAAcgBvAGQAdQBjAHQAVgBlAHIAcwBpAG8AbgAAADEA
+LgAwAC4ANgA5ADIAMQAuADEAOAA4ADcANwAAAAAARgAPAAEAQQBzAHMAZQBtAGIAbAB5ACAAVgBl
+AHIAcwBpAG8AbgAAADEALgAwAC4ANgA5ADIAMQAuADEAOAA4ADcANwAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAAAwAAAAwNAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
                   </arrayElements>
                 </property>
                 <property
@@ -1972,12 +2082,12 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
                   dataType="System.String"
                   description="Checksum to match component metedata against compiled codes."
                   name="MetadataChecksum"
-                  typeConverter="NOTBROWSABLE">26a9fc67a873fe3aebf310de09491208</property>
+                  typeConverter="NOTBROWSABLE">7fafc862cdd10a88472d7086b10c2df7</property>
                 <property
                   dataType="System.String"
                   description="Checksum to match component metedata against compiled codes."
                   name="MetadataShaChecksum"
-                  typeConverter="NOTBROWSABLE">2490f15ea5f29aa801fdc7d6657690bfbf0cc0fb</property>
+                  typeConverter="NOTBROWSABLE">9d50d8df6d2298bdc36c1f82a40f05271417a464</property>
                 <property
                   dataType="System.String"
                   name="UserComponentTypeName">Microsoft.SqlServer.Dts.Pipeline.ScriptComponentHost, Microsoft.SqlServer.TxScript, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91</property>
@@ -1995,6 +2105,13 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
                       cachedLength="6"
                       cachedName="Worker_Comp_Code"
                       lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[Worker_Comp_Code]" />
+                    <inputColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\Script Component.Inputs[Input 0].Columns[Employment_Status]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="1"
+                      cachedName="Employment_Status"
+                      lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[Employment_Status]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -2021,14 +2138,24 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
           <paths>
             <path
               refId="Package\(DFT) Load Data Into Destination Task.Paths[Changed Rows]"
-              endId="Package\(DFT) Load Data Into Destination Task\OLE DB Destination.Inputs[OLE DB Destination Input]"
+              endId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Inputs[OLE DB Destination Input]"
               name="Changed Rows"
               startId="Package\(DFT) Load Data Into Destination Task\(CSPL) Compare Hashes.Outputs[Changed Rows]" />
+            <path
+              refId="Package\(DFT) Load Data Into Destination Task.Paths[Conditional Split Default Output]"
+              endId="Package\(DFT) Load Data Into Destination Task\Script Component.Inputs[Input 0]"
+              name="Conditional Split Default Output"
+              startId="Package\(DFT) Load Data Into Destination Task\Conditional Split.Outputs[Conditional Split Default Output]" />
             <path
               refId="Package\(DFT) Load Data Into Destination Task.Paths[Data Conversion Output]"
               endId="Package\(DFT) Load Data Into Destination Task\Lookup.Inputs[Lookup Input]"
               name="Data Conversion Output"
               startId="Package\(DFT) Load Data Into Destination Task\Data Conversion.Outputs[Data Conversion Output]" />
+            <path
+              refId="Package\(DFT) Load Data Into Destination Task.Paths[First Name Missing]"
+              endId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Exception Table.Inputs[OLE DB Destination Input]"
+              name="First Name Missing"
+              startId="Package\(DFT) Load Data Into Destination Task\Conditional Split.Outputs[First Name Missing]" />
             <path
               refId="Package\(DFT) Load Data Into Destination Task.Paths[Lookup Match Output]"
               endId="Package\(DFT) Load Data Into Destination Task\(CSPL) Compare Hashes.Inputs[Conditional Split Input]"
@@ -2036,12 +2163,12 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
               startId="Package\(DFT) Load Data Into Destination Task\Lookup.Outputs[Lookup Match Output]" />
             <path
               refId="Package\(DFT) Load Data Into Destination Task.Paths[Lookup No Match Output]"
-              endId="Package\(DFT) Load Data Into Destination Task\OLE DB Command.Inputs[OLE DB Command Input]"
+              endId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Base Table.Inputs[OLE DB Command Input]"
               name="Lookup No Match Output"
               startId="Package\(DFT) Load Data Into Destination Task\Lookup.Outputs[Lookup No Match Output]" />
             <path
               refId="Package\(DFT) Load Data Into Destination Task.Paths[OLE DB Source Output]"
-              endId="Package\(DFT) Load Data Into Destination Task\Script Component.Inputs[Input 0]"
+              endId="Package\(DFT) Load Data Into Destination Task\Conditional Split.Inputs[Conditional Split Input]"
               name="OLE DB Source Output"
               startId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output]" />
             <path
@@ -2049,6 +2176,1359 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
               endId="Package\(DFT) Load Data Into Destination Task\Data Conversion.Inputs[Data Conversion Input]"
               name="Output 0"
               startId="Package\(DFT) Load Data Into Destination Task\Script Component.Outputs[Output 0]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\(DFT) Load Initial Hashes"
+      DTS:CreationName="SSIS.Pipeline.3"
+      DTS:Description="Data Flow Task"
+      DTS:Disabled="True"
+      DTS:DTSID="{EB9572E6-2274-402D-BE66-5A3573C53996}"
+      DTS:ExecutableType="SSIS.Pipeline.3"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="(DFT) Load Initial Hashes"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\(DFT) Load Initial Hashes\OLE DB Destination"
+              componentClassID="DTSAdapter.OLEDBDestination.3"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="OLE DB Destination"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[catavolt_users_hash]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\(DFT) Load Initial Hashes\OLE DB Destination.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[10.1.1.7.xalt_dev.svc_xalt]"
+                  connectionManagerRefId="Package.ConnectionManagers[10.1.1.7.xalt_dev.svc_xalt]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\(DFT) Load Initial Hashes\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\(DFT) Load Initial Hashes\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Hash]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="66"
+                      cachedName="Hash"
+                      externalMetadataColumnId="Package\(DFT) Load Initial Hashes\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Hash]"
+                      lineageId="Package\(DFT) Load Initial Hashes\Script Component.Outputs[Output 0].Columns[Hash]" />
+                    <inputColumn
+                      refId="Package\(DFT) Load Initial Hashes\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Employee_Code]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="11"
+                      cachedName="Employee_Code"
+                      externalMetadataColumnId="Package\(DFT) Load Initial Hashes\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[spectrum_code]"
+                      lineageId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Output].Columns[Employee_Code]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\(DFT) Load Initial Hashes\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[spectrum_code]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="spectrum_code" />
+                    <externalMetadataColumn
+                      refId="Package\(DFT) Load Initial Hashes\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Hash]"
+                      codePage="1252"
+                      dataType="str"
+                      length="66"
+                      name="Hash" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\(DFT) Load Initial Hashes\OLE DB Destination.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\(DFT) Load Initial Hashes\OLE DB Destination.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\(DFT) Load Initial Hashes\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\(DFT) Load Initial Hashes\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\(DFT) Load Initial Hashes\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\(DFT) Load Initial Hashes\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\(DFT) Load Initial Hashes\OLE DB Source"
+              componentClassID="DTSAdapter.OLEDBSource.3"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="OLE DB Source"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">select DISTINCT First_Name, Last_Name, Employee_Code,  Worker_Comp_Code, Employment_Status, Title
+from Spectrum_Employee
+where Company_Code IN ('CPR','SUB')
+--and Employment_Status IN ('T','A','I')
+--and Employee_Code = 'STRMICJ'</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\(DFT) Load Initial Hashes\OLE DB Source.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[10.1.1.7.xalt_dev.svc_xalt]"
+                  connectionManagerRefId="Package.ConnectionManagers[10.1.1.7.xalt_dev.svc_xalt]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Output].Columns[First_Name]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[First_Name]"
+                      length="20"
+                      lineageId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Output].Columns[First_Name]"
+                      name="First_Name"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Output].Columns[Last_Name]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Last_Name]"
+                      length="30"
+                      lineageId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Output].Columns[Last_Name]"
+                      name="Last_Name"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Output].Columns[Employee_Code]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Employee_Code]"
+                      length="11"
+                      lineageId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Output].Columns[Employee_Code]"
+                      name="Employee_Code"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Output].Columns[Worker_Comp_Code]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Worker_Comp_Code]"
+                      length="6"
+                      lineageId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Output].Columns[Worker_Comp_Code]"
+                      name="Worker_Comp_Code"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Output].Columns[Employment_Status]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Employment_Status]"
+                      length="1"
+                      lineageId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Output].Columns[Employment_Status]"
+                      name="Employment_Status"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Output].Columns[Title]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Title]"
+                      length="50"
+                      lineageId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Output].Columns[Title]"
+                      name="Title"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[First_Name]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="First_Name" />
+                    <externalMetadataColumn
+                      refId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Last_Name]"
+                      codePage="1252"
+                      dataType="str"
+                      length="30"
+                      name="Last_Name" />
+                    <externalMetadataColumn
+                      refId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Employee_Code]"
+                      codePage="1252"
+                      dataType="str"
+                      length="11"
+                      name="Employee_Code" />
+                    <externalMetadataColumn
+                      refId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Worker_Comp_Code]"
+                      codePage="1252"
+                      dataType="str"
+                      length="6"
+                      name="Worker_Comp_Code" />
+                    <externalMetadataColumn
+                      refId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Employment_Status]"
+                      codePage="1252"
+                      dataType="str"
+                      length="1"
+                      name="Employment_Status" />
+                    <externalMetadataColumn
+                      refId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Title]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="Title" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[First_Name]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[First_Name]"
+                      name="First_Name" />
+                    <outputColumn
+                      refId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Last_Name]"
+                      codePage="1252"
+                      dataType="str"
+                      length="30"
+                      lineageId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Last_Name]"
+                      name="Last_Name" />
+                    <outputColumn
+                      refId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Employee_Code]"
+                      codePage="1252"
+                      dataType="str"
+                      length="11"
+                      lineageId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Employee_Code]"
+                      name="Employee_Code" />
+                    <outputColumn
+                      refId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Worker_Comp_Code]"
+                      codePage="1252"
+                      dataType="str"
+                      length="6"
+                      lineageId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Worker_Comp_Code]"
+                      name="Worker_Comp_Code" />
+                    <outputColumn
+                      refId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Employment_Status]"
+                      codePage="1252"
+                      dataType="str"
+                      length="1"
+                      lineageId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Employment_Status]"
+                      name="Employment_Status" />
+                    <outputColumn
+                      refId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Title]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Title]"
+                      name="Title" />
+                    <outputColumn
+                      refId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\(DFT) Load Initial Hashes\Script Component"
+              componentClassID="DTS.ManagedComponentWrapper.3"
+              contactInfo="Includes and runs custom script code. For example, apply a business rule that limits the range of valid values in an &quot;income&quot; column or add values in two columns and calculate the average of the sum.;Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;8"
+              description="Includes and runs custom script code. For example, apply a business rule that limits the range of valid values in an &quot;income&quot; column or add values in two columns and calculate the average of the sum."
+              name="Script Component"
+              version="8">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Stores the source code of the component"
+                  isArray="true"
+                  name="SourceCode"
+                  state="cdata">
+                  <arrayElements
+                    arrayElementCount="30">
+                    <arrayElement
+                      dataType="System.String"><![CDATA[ComponentWrapper.cs]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[/* THIS IS AUTO-GENERATED CODE THAT WILL BE OVERWRITTEN! DO NOT EDIT!
+*  Microsoft SQL Server Integration Services component wrapper
+*  This module defines the base class for your component
+*  THIS IS AUTO-GENERATED CODE THAT WILL BE OVERWRITTEN! DO NOT EDIT! */
+
+using System;
+using System.Data;
+using Microsoft.SqlServer.Dts.Pipeline;
+using Microsoft.SqlServer.Dts.Pipeline.Wrapper;
+using Microsoft.SqlServer.Dts.Runtime.Wrapper;
+
+public class UserComponent: ScriptComponent
+{
+    public Connections Connections;
+    public Variables Variables;
+    public UserComponent()
+    {
+        Connections = new Connections(this);
+        Variables = new Variables(this);
+    }
+
+    public override void ProcessInput(int InputID, string InputName, PipelineBuffer Buffer, OutputNameMap OutputMap)
+    {
+
+        if (InputName.Equals(@"Input 0", StringComparison.Ordinal))
+        {
+            Input0_ProcessInput(new Input0Buffer(Buffer, GetColumnIndexes(InputID), OutputMap));
+        }
+
+    }
+
+    public virtual void Input0_ProcessInput(Input0Buffer Buffer)
+    {
+        while (Buffer.NextRow())
+        {
+            Input0_ProcessInputRow(Buffer);
+        }
+    }
+
+    public virtual void Input0_ProcessInputRow(Input0Buffer Row)
+    {
+    }
+
+}
+
+public class Connections
+{
+    ScriptComponent ParentComponent;
+
+    public Connections(ScriptComponent Component)
+    {
+        ParentComponent = Component;
+    }
+
+}
+
+public class Variables
+{
+    ScriptComponent ParentComponent;
+
+    public Variables(ScriptComponent Component)
+    {
+        ParentComponent = Component;
+    }
+
+}
+]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[Properties\Resources.resx]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+</root>]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[main.cs]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[#region Help:  Introduction to the Script Component
+/* The Script Component allows you to perform virtually any operation that can be accomplished in
+ * a .Net application within the context of an Integration Services data flow.
+ *
+ * Expand the other regions which have "Help" prefixes for examples of specific ways to use
+ * Integration Services features within this script component. */
+#endregion
+
+#region Namespaces
+using System;
+using System.Data;
+using System.Security.Cryptography;
+using Microsoft.SqlServer.Dts.Pipeline.Wrapper;
+using Microsoft.SqlServer.Dts.Runtime.Wrapper;
+#endregion
+
+/// <summary>
+/// This is the class to which to add your code.  Do not change the name, attributes, or parent
+/// of this class.
+/// </summary>
+[Microsoft.SqlServer.Dts.Pipeline.SSISScriptComponentEntryPointAttribute]
+public class ScriptMain : UserComponent
+{
+    #region Help:  Using Integration Services variables and parameters
+    /* To use a variable in this script, first ensure that the variable has been added to
+     * either the list contained in the ReadOnlyVariables property or the list contained in
+     * the ReadWriteVariables property of this script component, according to whether or not your
+     * code needs to write into the variable.  To do so, save this script, close this instance of
+     * Visual Studio, and update the ReadOnlyVariables and ReadWriteVariables properties in the
+     * Script Transformation Editor window.
+     * To use a parameter in this script, follow the same steps. Parameters are always read-only.
+     *
+     * Example of reading from a variable or parameter:
+     *  DateTime startTime = Variables.MyStartTime;
+     *
+     * Example of writing to a variable:
+     *  Variables.myStringVariable = "new value";
+     */
+    #endregion
+
+    #region Help:  Using Integration Services Connnection Managers
+    /* Some types of connection managers can be used in this script component.  See the help topic
+     * "Working with Connection Managers Programatically" for details.
+     *
+     * To use a connection manager in this script, first ensure that the connection manager has
+     * been added to either the list of connection managers on the Connection Managers page of the
+     * script component editor.  To add the connection manager, save this script, close this instance of
+     * Visual Studio, and add the Connection Manager to the list.
+     *
+     * If the component needs to hold a connection open while processing rows, override the
+     * AcquireConnections and ReleaseConnections methods.
+     * 
+     * Example of using an ADO.Net connection manager to acquire a SqlConnection:
+     *  object rawConnection = Connections.SalesDB.AcquireConnection(transaction);
+     *  SqlConnection salesDBConn = (SqlConnection)rawConnection;
+     *
+     * Example of using a File connection manager to acquire a file path:
+     *  object rawConnection = Connections.Prices_zip.AcquireConnection(transaction);
+     *  string filePath = (string)rawConnection;
+     *
+     * Example of releasing a connection manager:
+     *  Connections.SalesDB.ReleaseConnection(rawConnection);
+     */
+    #endregion
+
+    #region Help:  Firing Integration Services Events
+    /* This script component can fire events.
+     *
+     * Example of firing an error event:
+     *  ComponentMetaData.FireError(10, "Process Values", "Bad value", "", 0, out cancel);
+     *
+     * Example of firing an information event:
+     *  ComponentMetaData.FireInformation(10, "Process Values", "Processing has started", "", 0, fireAgain);
+     *
+     * Example of firing a warning event:
+     *  ComponentMetaData.FireWarning(10, "Process Values", "No rows were received", "", 0);
+     */
+    #endregion
+
+    /// <summary>
+    /// This method is called once, before rows begin to be processed in the data flow.
+    ///
+    /// You can remove this method if you don't need to do anything here.
+    /// </summary>
+    public override void PreExecute()
+    {
+        base.PreExecute();
+        /*
+         * Add your code here
+         */
+    }
+
+    /// <summary>
+    /// This method is called after all the rows have passed through this component.
+    ///
+    /// You can delete this method if you don't need to do anything here.
+    /// </summary>
+    public override void PostExecute()
+    {
+        base.PostExecute();
+        /*
+         * Add your code here
+         */
+    }
+
+    /// <summary>
+    /// This method is called once for every row that passes through the component from Input0.
+    ///
+    /// Example of reading a value from a column in the the row:
+    ///  string zipCode = Row.ZipCode
+    ///
+    /// Example of writing a value to a column in the row:
+    ///  Row.ZipCode = zipCode
+    /// </summary>
+    /// <param name="Row">The row that is currently passing through the component</param>
+    private SHA256 sha = new SHA256CryptoServiceProvider(); // used to create the SHA256 hash
+
+    public override void Input0_ProcessInputRow(Input0Buffer Row)
+    {
+        // concatenate all strings. NULL values are replaced with the empty string.
+        string hashSource =
+              (Row.WorkerCompCode_IsNull ? "" : Row.WorkerCompCode.ToString())
+              + (Row.EmploymentStatus_IsNull ? "" : Row.EmploymentStatus.ToString())
+            ;
+
+        byte[] hashBytes = sha.ComputeHash(System.Text.UnicodeEncoding.Unicode.GetBytes(hashSource));
+
+        // convert the byte stream to a string
+        System.Text.StringBuilder sb = new System.Text.StringBuilder();
+
+        for (int i = 0; i < hashBytes.Length; i++)
+        {
+            sb.Append(hashBytes[i].ToString("X2"));
+        }
+
+        Row.Hash = "0x" + sb.ToString(); // add the result to the output
+    }
+
+}
+]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[BufferWrapper.cs]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[/* THIS IS AUTO-GENERATED CODE THAT WILL BE OVERWRITTEN! DO NOT EDIT!
+*  Microsoft SQL Server Integration Services buffer wrappers
+*  This module defines classes for accessing data flow buffers
+*  THIS IS AUTO-GENERATED CODE THAT WILL BE OVERWRITTEN! DO NOT EDIT! */
+
+
+
+using System;
+using System.Data;
+using Microsoft.SqlServer.Dts.Pipeline;
+using Microsoft.SqlServer.Dts.Pipeline.Wrapper;
+
+public class Input0Buffer: ScriptBuffer
+
+{
+    public Input0Buffer(PipelineBuffer Buffer, int[] BufferColumnIndexes, OutputNameMap OutputMap)
+        : base(Buffer, BufferColumnIndexes, OutputMap)
+    {
+    }
+
+    public String WorkerCompCode
+    {
+        get
+        {
+            return Buffer.GetString(BufferColumnIndexes[0]);
+        }
+    }
+    public bool WorkerCompCode_IsNull
+    {
+        get
+        {
+            return IsNull(0);
+        }
+    }
+
+    public String EmploymentStatus
+    {
+        get
+        {
+            return Buffer.GetString(BufferColumnIndexes[1]);
+        }
+    }
+    public bool EmploymentStatus_IsNull
+    {
+        get
+        {
+            return IsNull(1);
+        }
+    }
+
+    public String Hash
+    {
+        set
+        {
+            this[2] = value;
+        }
+    }
+    public bool Hash_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(2);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    new public bool NextRow()
+    {
+        return base.NextRow();
+    }
+
+    new public bool EndOfRowset()
+    {
+        return base.EndOfRowset();
+    }
+
+}
+]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[Properties\Settings.Designer.cs]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="SC_1c997008ccab4dd4ad849ae91a085969.Properties.Settings.get_Default():SC_1c997008ccab4dd4ad849ae91a085969.Properties.Sett" +
+    "ings")]
+
+namespace SC_1c997008ccab4dd4ad849ae91a085969.Properties {
+    
+    
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        private static Settings defaultInstance = new Settings();
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+    }
+}
+]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[SC_1c997008ccab4dd4ad849ae91a085969.csproj]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{e2fe381b-4a20-490b-8bd6-08660725ce3e}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SC_1c997008ccab4dd4ad849ae91a085969</RootNamespace>
+    <AssemblyName>SC_1c997008ccab4dd4ad849ae91a085969</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>.\bin\Debug\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+    <OutputPath>.\bin\Release\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.SqlServer.TxScript, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.SqlServer.DTSRuntimeWrap, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.SqlServer.DTSPipelineWrap, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.SqlServer.PipelineHost, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Compile Include="main.cs" />
+    <Compile Include="BufferWrapper.cs" />
+    <Compile Include="ComponentWrapper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <!-- Include the build rules for a C# project.-->
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- This section defines VSTA properties that describe the host-changable project properties. -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}">
+        <ProjectProperties HostName="ScriptComponent" HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}" ApplicationType="usd" Language="cs" TemplatesPath="" DebugInfoExeName="" DebugInfoCommandLine="" DebugInfoWorkingDir="" IconImageList="" />
+        <Host Name="ScriptComponent" GeneratedNamespace="SC_1c997008ccab4dd4ad849ae91a085969" IconIndex="0"></Host>
+        <ProjectClient>
+          <HostIdentifier>SSIS_SC110</HostIdentifier>
+        </ProjectClient>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[Project]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF16LE]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[<?xml version="1.0" encoding="UTF-16" standalone="yes"?>
+<c:Project xmlns:c="http://schemas.microsoft.com/codeprojectml/2010/08/main" xmlns:msb="http://schemas.microsoft.com/developer/msbuild/2003" runtimeVersion="3.0" schemaVersion="1.0">
+	<msb:PropertyGroup>
+		<msb:CodeName>SC_1c997008ccab4dd4ad849ae91a085969</msb:CodeName>
+		<msb:Language>msBuild</msb:Language>
+		<msb:DisplayName>SC_1c997008ccab4dd4ad849ae91a085969</msb:DisplayName>
+		<msb:ProjectId>{06B8ED38-E20D-4DC5-A3CC-DF0CCDF728F6}</msb:ProjectId>
+	</msb:PropertyGroup>
+	<msb:ItemGroup>
+		<msb:Project Include="SC_1c997008ccab4dd4ad849ae91a085969.csproj"/>
+		<msb:File Include="Properties\AssemblyInfo.cs"/>
+		<msb:File Include="Properties\Settings.settings"/>
+		<msb:File Include="Properties\Resources.resx"/>
+		<msb:File Include="Properties\Resources.Designer.cs"/>
+		<msb:File Include="Properties\Settings.Designer.cs"/>
+		<msb:File Include="main.cs"/>
+		<msb:File Include="BufferWrapper.cs"/>
+		<msb:File Include="ComponentWrapper.cs"/>
+	</msb:ItemGroup>
+</c:Project>]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[Properties\AssemblyInfo.cs]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("SC_1c997008ccab4dd4ad849ae91a085969")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("SC_1c997008ccab4dd4ad849ae91a085969")]
+[assembly: AssemblyCopyright("Copyright @  2018")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.*")]
+]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[Properties\Settings.settings]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[Properties\Resources.Designer.cs]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="SC_1c997008ccab4dd4ad849ae91a085969.Properties.Resources.get_ResourceManager():System.Resources.Resou" +
+    "rceManager")]
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="SC_1c997008ccab4dd4ad849ae91a085969.Properties.Resources.get_Culture():System.Globalization.CultureIn" +
+    "fo")]
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="SC_1c997008ccab4dd4ad849ae91a085969.Properties.Resources.set_Culture(System.Globalization.CultureInfo" +
+    "):Void")]
+
+namespace SC_1c997008ccab4dd4ad849ae91a085969.Properties {
+    
+    
+    /// <summary>
+    ///   A strongly-typed resource class, for looking up localized strings, etc.
+    /// </summary>
+    // This class was auto-generated by the StronglyTypedResourceBuilder
+    // class via a tool like ResGen or Visual Studio.
+    // To add or remove a member, edit your .ResX file then rerun ResGen
+    // with the /str option, or rebuild your VS project.
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    internal class Resources {
+        
+        private static global::System.Resources.ResourceManager resourceMan;
+        
+        private static global::System.Globalization.CultureInfo resourceCulture;
+        
+        [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+        internal Resources() {
+        }
+        
+        /// <summary>
+        ///   Returns the cached ResourceManager instance used by this class.
+        /// </summary>
+        [global::System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        internal static global::System.Resources.ResourceManager ResourceManager {
+            get {
+                if ((resourceMan == null)) {
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SC_1c997008ccab4dd4ad849ae91a085969.Properties.Resources", typeof(Resources).Assembly);
+                    resourceMan = temp;
+                }
+                return resourceMan;
+            }
+        }
+        
+        /// <summary>
+        ///   Overrides the current thread's CurrentUICulture property for all
+        ///   resource lookups using this strongly typed resource class.
+        /// </summary>
+        [global::System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        internal static global::System.Globalization.CultureInfo Culture {
+            get {
+                return resourceCulture;
+            }
+            set {
+                resourceCulture = value;
+            }
+        }
+    }
+}
+]]></arrayElement>
+                  </arrayElements>
+                </property>
+                <property
+                  dataType="System.String"
+                  description="Stores the binary representation of the component"
+                  isArray="true"
+                  name="BinaryCode"
+                  state="cdata">
+                  <arrayElements
+                    arrayElementCount="2">
+                    <arrayElement
+                      dataType="System.String"><![CDATA[SC_1c997008ccab4dd4ad849ae91a085969.dll]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[TVqQAAMAAAAEAAAA//8AALgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAgAAAAA4fug4AtAnNIbgBTM0hVGhpcyBwcm9ncmFtIGNhbm5vdCBiZSBydW4gaW4gRE9TIG1v
+ZGUuDQ0KJAAAAAAAAABQRQAATAEDANCMElwAAAAAAAAAAOAAIiALATAAABYAAAAIAAAAAAAALjQA
+AAAgAAAAQAAAAAAAEAAgAAAAAgAABAAAAAAAAAAEAAAAAAAAAACAAAAAAgAAAAAAAAMAQIUAABAA
+ABAAAAAAEAAAEAAAAAAAABAAAAAAAAAAAAAAANwzAABPAAAAAEAAAHgEAAAAAAAAAAAAAAAAAAAA
+AAAAAGAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAIAAACAAAAAAAAAAAAAAACCAAAEgAAAAAAAAAAAAAAC50ZXh0AAAANBQAAAAgAAAAFgAAAAIA
+AAAAAAAAAAAAAAAAACAAAGAucnNyYwAAAHgEAAAAQAAAAAYAAAAYAAAAAAAAAAAAAAAAAABAAABA
+LnJlbG9jAAAMAAAAAGAAAAACAAAAHgAAAAAAAAAAAAAAAAAAQAAAQgAAAAAAAAAAAAAAAAAAAAAQ
+NAAAAAAAAEgAAAACAAUAZCIAAMAQAAABAAAAAAAAACQzAAC4AAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAB4CKBAAAAoqHgIoEQAACioTMAMAlAAAAAEAABEDbwcAAAYt
+DQNvBgAABm8SAAAKKwVyAQAAcANvCQAABi0NA28IAAAGbxIAAAorBXIBAABwKBMAAAoKAnsBAAAE
+KBQAAAoGbxUAAApvFgAACgtzFwAACgwWDSscCAcJjx8AAAFyAwAAcCgYAAAKbxkAAAomCRdYDQkH
+jmky3gNyCQAAcAhvEgAACigTAAAKbwoAAAYqSgJzGgAACn0BAAAEAigOAAAGKioCAwQFKBsAAAoq
+UgJ7HAAACgJ7HQAAChaUbx4AAAoqIgIWKB8AAAoqUgJ7HAAACgJ7HQAACheUbx4AAAoqIgIXKB8A
+AAoqJgIYAyggAAAKKloDLAgCGCghAAAKKnIPAABwcyIAAAp6HgIoIwAACioeAigkAAAKKn4CKCUA
+AAoCAnMSAAAGfQIAAAQCAnMTAAAGfQMAAAQqkgRyrAAAcBpvJgAACiwVAgUCAygnAAAKDgRzBQAA
+Bm8QAAAGKkorBwIDbxEAAAYDbwwAAAYt8SoGKjoCKCgAAAoCA30EAAAEKjoCKCgAAAoCA30FAAAE
+Kh4CKCgAAAoqrn4GAAAELR5yvAAAcNAHAAACKCkAAApvKgAACnMrAAAKgAYAAAR+BgAABCoafgcA
+AAQqHgKABwAABCoafggAAAQqHgIoLAAACioucxkAAAaACAAABCoAAABCU0pCAQABAAAAAAAMAAAA
+djQuMC4zMDMxOQAAAAAFAGwAAAAUBgAAI34AAIAGAAAsBwAAI1N0cmluZ3MAAAAArA0AADABAAAj
+VVMA3A4AABAAAAAjR1VJRAAAAOwOAADUAQAAI0Jsb2IAAAAAAAAAAgAAAVcVogEJAQAAAPoBMwAW
+AAABAAAAJQAAAAgAAAAIAAAAGgAAAA8AAAAsAAAAEAAAAAEAAAADAAAACQAAAAoAAAABAAAABQAA
+AAEAAAAAAFYDAQAAAAAABgAhAhMFBgC1AhMFBgBtAQAFDwCHBQAABgCaASsEBgAEAisEBgDlASsE
+BgCcAisEBgBBAisEBgBaAisEBgCxASsEBgDMAf4CCgB1Aq4ABgABAP8GBgCoBNQGCgDSBK4ADgDD
+BK4ACgB0BK4ACgByBq4ABgA1BtUDBgBQAQAFBgDjBDMFBgBoBBYEEgAgAUADEgCBAUADEgAIAQEE
+BgA1ARMFBgAkA9UDBgD1AtQGBgDcA/8GBgDqAtUDFgCMBP8GBgA9BNUDBgBXBNUDBgDPANUDBgCA
+ANUDBgAgBysEAAAAACwAAAAAAAEAAQABABAA9gMAABAAAQABAAEAEAC2BAAAQQACAAUAAQAQAFQG
+AABNAAIADgABABAADQYAAFEABAASAAEAEADFBQAAUQAFABMAAAAQADoFlgVRAAYAFAAAARAA/QWW
+BWkACAAYAAEAPQCoAAYADQasAAYAxQWwAAEAYga0AAEAYga0ABEA6gO4ABEA+AC8ABEAUQDAAFAg
+AAAAAMYA0wIGAAEAWCAAAAAAxgDeAgYAAQBgIAAAAADGAOAGxAABAAAhAAAAAIYY8wQGAAIAEyEA
+AAAAhhjzBEsAAgAeIQAAAACGCGEAJAAFADMhAAAAAIYIfgNtAAUAPCEAAAAAhggZBiQABQBRIQAA
+AACGCKgDbQAFAFohAAAAAIYIKwMQAAUAZCEAAAAAhgiYA8oABgB7IQAAAACGAPcGbQAHAIMhAAAA
+AIYAPAZtAAcAiyEAAAAAhhjzBAYABwCrIQAAAADGAMcGzwAHANAhAAAAAMYBwAbEAAsA4yEAAAAA
+xgHgBsQADADlIQAAAACGGPME2QANAPQhAAAAAIYY8wTZAA4AAyIAAAAAgxjzBAYADwALIgAAAACT
+CN8E3wAPADciAAAAAJMI4ADkAA8APiIAAAAAkwjsAOkADwBGIgAAAACWCEgG7wAQAE0iAAAAAIYY
+8wQGABAAVSIAAAAAkRj5BPQAEAAAAAEA+wYAAAEA2AQAAAIA2AUAAAMAggQAAAEA7wIAAAEA7wIA
+AAEANQAAAAIApAAAAAMA2AQAAAQAggQAAAEA2AQAAAEA+wYAAAEAeAYAAAEAeAYAAAEA7wIJAPME
+AQARAPMEBgAZAPMECgApAPMEEAAxAPMEEAA5APMEEABBAPMEEABJAPMEEABRAPMEEABZAPMEEABh
+APMEEABpAPMEBgCpAPMEBgDJAPMEFQDZAPMEBgCZANMCBgCZAN4CBgChABgDJADhAC4GKADpAHQA
+LgDpAM8FMwDxADQDOQB5APMEBgD5ABgDQAB5AEoARQABAfMEBgCBAPMESwCBANgEVQCBANgFWQCJ
+ACEDXQCBAL0DYgCBAMwDZwCBAMQDAQAJAfMEEACBAPcGbQCBADwGbQCZAPMEBgDhAAYGcQCZAOwF
+eQChAPMEBgAZAZIAfwAZARwHiACxAPMEjgDRAPMEBgAuAAsADwEuABMAGAEuABsANwEuACMAQAEu
+ACsAaQEuADMAaQEuADsAaQEuAEMAQAEuAEsAbwEuAFMAaQEuAFsAhgFDAGMAzgHjAGsAzgHpAHMA
+NwEBAXsAzgEJAXMANwEbAAMAAQAHAAcACAAJAAAAZQD4AAAAggP8AAAAHQb4AAAArAP8AAAAOwP4
+AAAAnAP8AAAA4wQAAQAAAAEFAQAATAYKAQIABgADAAIABwAFAAIACAAHAAIACQAJAAEACgALAAEA
+CwANAAIAFQAPAAIAFgARAAEAFwARAAIAGAATAASAAAABAAAACRu4SwAAAAAAAAgAAAAEAAAAAAAA
+AAAAAACWAEEAAAAAAAsAAAAAAAAAAAAAAJ8AggYAAAAACwAAAAAAAAAAAAAAnwCfBgAAAAAEAAAA
+AAAAAAAAAACWANUDAAAAAAQAAAAAAAAAAAAAAJYA1AAAAAAAAAAAAAEAAABEBQAAAAAAAABTSEEy
+NTYAU0NfMWM5OTcwMDhjY2FiNGRkNGFkODQ5YWU5MWEwODU5NjkAPE1vZHVsZT4ASW5wdXRJRABz
+aGEAbXNjb3JsaWIAQXBwZW5kAGRlZmF1bHRJbnN0YW5jZQBnZXRfV29ya2VyQ29tcENvZGUAZ2V0
+X1VuaWNvZGUAUnVudGltZVR5cGVIYW5kbGUAR2V0VHlwZUZyb21IYW5kbGUASW5wdXROYW1lAE1p
+Y3Jvc29mdC5TcWxTZXJ2ZXIuRHRzLlBpcGVsaW5lAFR5cGUAU3lzdGVtLkNvcmUAZ2V0X0N1bHR1
+cmUAc2V0X0N1bHR1cmUAcmVzb3VyY2VDdWx0dXJlAEFwcGxpY2F0aW9uU2V0dGluZ3NCYXNlAEVk
+aXRvckJyb3dzYWJsZVN0YXRlAENvbXBpbGVyR2VuZXJhdGVkQXR0cmlidXRlAERlYnVnZ2VyTm9u
+VXNlckNvZGVBdHRyaWJ1dGUARGVidWdnYWJsZUF0dHJpYnV0ZQBFZGl0b3JCcm93c2FibGVBdHRy
+aWJ1dGUAQXNzZW1ibHlUaXRsZUF0dHJpYnV0ZQBBc3NlbWJseVRyYWRlbWFya0F0dHJpYnV0ZQBU
+YXJnZXRGcmFtZXdvcmtBdHRyaWJ1dGUAQXNzZW1ibHlDb25maWd1cmF0aW9uQXR0cmlidXRlAEFz
+c2VtYmx5RGVzY3JpcHRpb25BdHRyaWJ1dGUAQ29tcGlsYXRpb25SZWxheGF0aW9uc0F0dHJpYnV0
+ZQBBc3NlbWJseVByb2R1Y3RBdHRyaWJ1dGUAQXNzZW1ibHlDb3B5cmlnaHRBdHRyaWJ1dGUAU1NJ
+U1NjcmlwdENvbXBvbmVudEVudHJ5UG9pbnRBdHRyaWJ1dGUAQXNzZW1ibHlDb21wYW55QXR0cmli
+dXRlAFJ1bnRpbWVDb21wYXRpYmlsaXR5QXR0cmlidXRlAFByZUV4ZWN1dGUAUG9zdEV4ZWN1dGUA
+Qnl0ZQB2YWx1ZQBFbmNvZGluZwBTeXN0ZW0uUnVudGltZS5WZXJzaW9uaW5nAFRvU3RyaW5nAEdl
+dFN0cmluZwBzZXRfSGFzaABDb21wdXRlSGFzaABTeXN0ZW0uQ29tcG9uZW50TW9kZWwAU0NfMWM5
+OTcwMDhjY2FiNGRkNGFkODQ5YWU5MWEwODU5NjkuZGxsAGdldF9Xb3JrZXJDb21wQ29kZV9Jc051
+bGwAc2V0X0hhc2hfSXNOdWxsAGdldF9FbXBsb3ltZW50U3RhdHVzX0lzTnVsbABTZXROdWxsAHNl
+dF9JdGVtAFN5c3RlbQBIYXNoQWxnb3JpdGhtAHJlc291cmNlTWFuAFNjcmlwdE1haW4AU3lzdGVt
+LkNvbmZpZ3VyYXRpb24AU3lzdGVtLkdsb2JhbGl6YXRpb24AU3lzdGVtLlJlZmxlY3Rpb24ASW52
+YWxpZE9wZXJhdGlvbkV4Y2VwdGlvbgBTdHJpbmdDb21wYXJpc29uAEN1bHR1cmVJbmZvAE91dHB1
+dE5hbWVNYXAAT3V0cHV0TWFwAFNIQTI1NkNyeXB0b1NlcnZpY2VQcm92aWRlcgBTdHJpbmdCdWls
+ZGVyAElucHV0MEJ1ZmZlcgBQaXBlbGluZUJ1ZmZlcgBTY3JpcHRCdWZmZXIAZ2V0X1Jlc291cmNl
+TWFuYWdlcgAuY3RvcgAuY2N0b3IAU3lzdGVtLkRpYWdub3N0aWNzAFN5c3RlbS5SdW50aW1lLkNv
+bXBpbGVyU2VydmljZXMAU3lzdGVtLlJlc291cmNlcwBTQ18xYzk5NzAwOGNjYWI0ZGQ0YWQ4NDlh
+ZTkxYTA4NTk2OS5Qcm9wZXJ0aWVzLlJlc291cmNlcy5yZXNvdXJjZXMARGVidWdnaW5nTW9kZXMA
+U0NfMWM5OTcwMDhjY2FiNGRkNGFkODQ5YWU5MWEwODU5NjkuUHJvcGVydGllcwBWYXJpYWJsZXMA
+R2V0Qnl0ZXMAQnVmZmVyQ29sdW1uSW5kZXhlcwBHZXRDb2x1bW5JbmRleGVzAFNldHRpbmdzAEVx
+dWFscwBDb25uZWN0aW9ucwBnZXRfRW1wbG95bWVudFN0YXR1cwBDb25jYXQAT2JqZWN0AEVuZE9m
+Um93c2V0AGdldF9EZWZhdWx0AFVzZXJDb21wb25lbnQAUGFyZW50Q29tcG9uZW50AFNjcmlwdENv
+bXBvbmVudABNaWNyb3NvZnQuU3FsU2VydmVyLlR4U2NyaXB0AE1pY3Jvc29mdC5TcWxTZXJ2ZXIu
+UGlwZWxpbmVIb3N0AElucHV0MF9Qcm9jZXNzSW5wdXQAU3lzdGVtLlRleHQASW5wdXQwX1Byb2Nl
+c3NJbnB1dFJvdwBOZXh0Um93AFN5c3RlbS5TZWN1cml0eS5DcnlwdG9ncmFwaHkAZ2V0X0Fzc2Vt
+Ymx5AAAAAAABAAVYADIAAAUwAHgAAICbSQBzAE4AdQBsAGwAIABwAHIAbwBwAGUAcgB0AHkAIABj
+AGEAbgBuAG8AdAAgAGIAZQAgAHMAZQB0ACAAdABvACAARgBhAGwAcwBlAC4AIABBAHMAcwBpAGcA
+bgAgAGEAIAB2AGEAbAB1AGUAIAB0AG8AIAB0AGgAZQAgAGMAbwBsAHUAbQBuACAAaQBuAHMAdABl
+AGEAZAAuAAAPSQBuAHAAdQB0ACAAMAAAcVMAQwBfADEAYwA5ADkANwAwADAAOABjAGMAYQBiADQA
+ZABkADQAYQBkADgANAA5AGEAZQA5ADEAYQAwADgANQA5ADYAOQAuAFAAcgBvAHAAZQByAHQAaQBl
+AHMALgBSAGUAcwBvAHUAcgBjAGUAcwAAAAD65QyZCNYET7gfIazQ6j5KAAQgAQEIAyAAAQUgAQER
+EQQgAQEOBSABARFhCAcEDh0FEj0IAyAADgUAAg4ODgQAABJ1BSABHQUOBiABHQUdBQQgAQ4OBSAB
+Ej0OCSADARJFHQgSSQMGEkUDBh0IBCABDggEIAECCAUgAgEIHAMgAAIHIAICDhGAiQUgAR0ICAgA
+ARKAjRGAkQUgABKAlQcgAgEOEoCVCLd6XFYZNOCJCImEXc2AgMyRAwYSOQMGEhQDBhIYAwYSTQMG
+ElkDBhJdAwYSIAUgAQESDAQgAQECCSAEAQgOEkUSSQUgAQESTQQAABJZBAAAEl0FAAEBEl0EAAAS
+IAMAAAEDKAAOAygAAgQIABJZBAgAEl0ECAASIAgBAAgAAAAAAB4BAAEAVAIWV3JhcE5vbkV4Y2Vw
+dGlvblRocm93cwEIAQACAAAAAAAoAQAjU0NfMWM5OTcwMDhjY2FiNGRkNGFkODQ5YWU5MWEwODU5
+NjkAAAUBAAAAABYBABFDb3B5cmlnaHQgQCAgMjAxOAAARwEAGi5ORVRGcmFtZXdvcmssVmVyc2lv
+bj12NC4wAQBUDhRGcmFtZXdvcmtEaXNwbGF5TmFtZRAuTkVUIEZyYW1ld29yayA0BAEAAAAAtAAA
+AM7K774BAAAAkQAAAGxTeXN0ZW0uUmVzb3VyY2VzLlJlc291cmNlUmVhZGVyLCBtc2NvcmxpYiwg
+VmVyc2lvbj00LjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2
+MTkzNGUwODkjU3lzdGVtLlJlc291cmNlcy5SdW50aW1lUmVzb3VyY2VTZXQCAAAAAAAAAAAAAABQ
+QURQQURQtAAAAAQ0AAAAAAAAAAAAAB40AAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQNAAAAAAA
+AAAAAAAAAF9Db3JEbGxNYWluAG1zY29yZWUuZGxsAAAAAAD/JQAgABAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAABABAAAAAYAACAAAAAAAAAAAAAAAAAAAABAAEAAAAwAACAAAAAAAAAAAAAAAAAAAABAAAAAABI
+AAAAWEAAABoEAAAAAAAAAAAAABoENAAAAFYAUwBfAFYARQBSAFMASQBPAE4AXwBJAE4ARgBPAAAA
+AAC9BO/+AAABAAAAAQC4SwkbAAABALhLCRs/AAAAAAAAAAQAAAACAAAAAAAAAAAAAAAAAAAARAAA
+AAEAVgBhAHIARgBpAGwAZQBJAG4AZgBvAAAAAAAkAAQAAABUAHIAYQBuAHMAbABhAHQAaQBvAG4A
+AAAAAAAAsAR6AwAAAQBTAHQAcgBpAG4AZwBGAGkAbABlAEkAbgBmAG8AAABWAwAAAQAwADAAMAAw
+ADAANABiADAAAAAaAAEAAQBDAG8AbQBtAGUAbgB0AHMAAAAAAAAAIgABAAEAQwBvAG0AcABhAG4A
+eQBOAGEAbQBlAAAAAAAAAAAAcAAkAAEARgBpAGwAZQBEAGUAcwBjAHIAaQBwAHQAaQBvAG4AAAAA
+AFMAQwBfADEAYwA5ADkANwAwADAAOABjAGMAYQBiADQAZABkADQAYQBkADgANAA5AGEAZQA5ADEA
+YQAwADgANQA5ADYAOQAAAD4ADwABAEYAaQBsAGUAVgBlAHIAcwBpAG8AbgAAAAAAMQAuADAALgA2
+ADkAMgAxAC4AMQA5ADMAOAA0AAAAAABwACgAAQBJAG4AdABlAHIAbgBhAGwATgBhAG0AZQAAAFMA
+QwBfADEAYwA5ADkANwAwADAAOABjAGMAYQBiADQAZABkADQAYQBkADgANAA5AGEAZQA5ADEAYQAw
+ADgANQA5ADYAOQAuAGQAbABsAAAASAASAAEATABlAGcAYQBsAEMAbwBwAHkAcgBpAGcAaAB0AAAA
+QwBvAHAAeQByAGkAZwBoAHQAIABAACAAIAAyADAAMQA4AAAAKgABAAEATABlAGcAYQBsAFQAcgBh
+AGQAZQBtAGEAcgBrAHMAAAAAAAAAAAB4ACgAAQBPAHIAaQBnAGkAbgBhAGwARgBpAGwAZQBuAGEA
+bQBlAAAAUwBDAF8AMQBjADkAOQA3ADAAMAA4AGMAYwBhAGIANABkAGQANABhAGQAOAA0ADkAYQBl
+ADkAMQBhADAAOAA1ADkANgA5AC4AZABsAGwAAABoACQAAQBQAHIAbwBkAHUAYwB0AE4AYQBtAGUA
+AAAAAFMAQwBfADEAYwA5ADkANwAwADAAOABjAGMAYQBiADQAZABkADQAYQBkADgANAA5AGEAZQA5
+ADEAYQAwADgANQA5ADYAOQAAAEIADwABAFAAcgBvAGQAdQBjAHQAVgBlAHIAcwBpAG8AbgAAADEA
+LgAwAC4ANgA5ADIAMQAuADEAOQAzADgANAAAAAAARgAPAAEAQQBzAHMAZQBtAGIAbAB5ACAAVgBl
+AHIAcwBpAG8AbgAAADEALgAwAC4ANgA5ADIAMQAuADEAOQAzADgANAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAAAwAAAAwNAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
+                  </arrayElements>
+                </property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the Microsoft Visual Studio Tools for Applications project. Project names must be unique within a package."
+                  name="VSTAProjectName"
+                  typeConverter="NOTBROWSABLE">SC_1c997008ccab4dd4ad849ae91a085969</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the programming language used by the script."
+                  name="ScriptLanguage"
+                  typeConverter="Microsoft.SqlServer.VSTAHosting.ScriptingLanguages, Microsoft.SqlServer.VSTAScriptingLib, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">CSharp</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies a comma-separated list of read-only variables."
+                  name="ReadOnlyVariables"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ScriptUIVariablePickerDlg, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies a comma-separated list of read/write variables."
+                  name="ReadWriteVariables"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ScriptUIWriteableVariablePickerDlg, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.String"
+                  description="List of breakpoints present on the script."
+                  isArray="true"
+                  name="BreakpointCollection"
+                  typeConverter="NOTBROWSABLE">
+                  <arrayElements
+                    arrayElementCount="0" />
+                </property>
+                <property
+                  dataType="System.String"
+                  description="Checksum to match component metedata against compiled codes."
+                  name="MetadataChecksum"
+                  typeConverter="NOTBROWSABLE">7fafc862cdd10a88472d7086b10c2df7</property>
+                <property
+                  dataType="System.String"
+                  description="Checksum to match component metedata against compiled codes."
+                  name="MetadataShaChecksum"
+                  typeConverter="NOTBROWSABLE">9d50d8df6d2298bdc36c1f82a40f05271417a464</property>
+                <property
+                  dataType="System.String"
+                  name="UserComponentTypeName">Microsoft.SqlServer.Dts.Pipeline.ScriptComponentHost, Microsoft.SqlServer.TxScript, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91</property>
+              </properties>
+              <inputs>
+                <input
+                  refId="Package\(DFT) Load Initial Hashes\Script Component.Inputs[Input 0]"
+                  hasSideEffects="true"
+                  name="Input 0">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\(DFT) Load Initial Hashes\Script Component.Inputs[Input 0].Columns[Worker_Comp_Code]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="6"
+                      cachedName="Worker_Comp_Code"
+                      lineageId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Output].Columns[Worker_Comp_Code]" />
+                    <inputColumn
+                      refId="Package\(DFT) Load Initial Hashes\Script Component.Inputs[Input 0].Columns[Employment_Status]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="1"
+                      cachedName="Employment_Status"
+                      lineageId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Output].Columns[Employment_Status]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\(DFT) Load Initial Hashes\Script Component.Outputs[Output 0]"
+                  name="Output 0"
+                  synchronousInputId="Package\(DFT) Load Initial Hashes\Script Component.Inputs[Input 0]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\(DFT) Load Initial Hashes\Script Component.Outputs[Output 0].Columns[Hash]"
+                      codePage="1252"
+                      dataType="str"
+                      length="66"
+                      lineageId="Package\(DFT) Load Initial Hashes\Script Component.Outputs[Output 0].Columns[Hash]"
+                      name="Hash" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\(DFT) Load Initial Hashes.Paths[OLE DB Source Output]"
+              endId="Package\(DFT) Load Initial Hashes\Script Component.Inputs[Input 0]"
+              name="OLE DB Source Output"
+              startId="Package\(DFT) Load Initial Hashes\OLE DB Source.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\(DFT) Load Initial Hashes.Paths[Output 0]"
+              endId="Package\(DFT) Load Initial Hashes\OLE DB Destination.Inputs[OLE DB Destination Input]"
+              name="Output 0"
+              startId="Package\(DFT) Load Initial Hashes\Script Component.Outputs[Output 0]" />
           </paths>
         </pipeline>
       </DTS:ObjectData>
@@ -2066,7 +3546,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{8149C0BD-37CE-41EF-A723-EF33A779C9A0}"
-          SQLTask:SqlStatementSource="IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[catavolt_users_staging]') AND type in (N'U'))&#xA;&#x9;DROP TABLE [dbo].[catavolt_users_staging];&#xA;GO&#xA;&#xA;IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[catavolt_users_staging]') AND type in (N'U'))&#xA;BEGIN&#xA;&#x9;CREATE TABLE [dbo].[catavolt_users_staging](&#xA;&#x9;&#x9;catavolt_spectrum_code varchar(50)&#xA;&#x9;&#x9;,catavolt_spectrum_workers_comp_code varchar(10)&#xA;&#x9;&#x9;,catavolt_hash char(66)&#xA;&#x9;);&#xA;END&#xA;GO" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[catavolt_users_staging]') AND type in (N'U'))&#xA;&#x9;DROP TABLE [dbo].[catavolt_users_staging];&#xA;GO&#xA;&#xA;IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[catavolt_users_staging]') AND type in (N'U'))&#xA;BEGIN&#xA;&#x9;CREATE TABLE [dbo].[catavolt_users_staging](&#xA;&#x9;&#x9;catavolt_spectrum_code varchar(50)&#xA;&#x9;&#x9;,catavolt_spectrum_workers_comp_code varchar(10)&#xA;,catavolt_spectrum_employment_status varchar(1)&#xA;&#x9;&#x9;,catavolt_hash char(66)&#xA;&#x9;);&#xA;END&#xA;GO" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
@@ -2087,6 +3567,22 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
+      DTS:refId="Package\(SQL) Trunc Exception Table"
+      DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{FBCD6D18-E252-401B-B68A-A476C4A8EF94}"
+      DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="(SQL) Trunc Exception Table"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{8149C0BD-37CE-41EF-A723-EF33A779C9A0}"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE dbo.catavolt_users_exception;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
       DTS:refId="Package\(SQL) Update Destination Table"
       DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
       DTS:Description="Execute SQL Task"
@@ -2099,7 +3595,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{8149C0BD-37CE-41EF-A723-EF33A779C9A0}"
-          SQLTask:SqlStatementSource="UPDATE dest&#xA;SET&#x9; catavolt_spectrum_workers_comp_code = upd.catavolt_spectrum_workers_comp_code&#xA;     ,catavolt_hash                          = upd.catavolt_hash&#xA;FROM [dbo].[catavolt_users]&#x9;&#x9;dest&#xA;JOIN [dbo].[catavolt_users_staging]&#x9;upd ON dest.catavolt_spectrum_code = upd.catavolt_spectrum_code;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="UPDATE dest&#xA;SET&#x9; catavolt_spectrum_workers_comp_code = upd.catavolt_spectrum_workers_comp_code&#xA;,catavolt_spectrum_employment_status = upd.catavolt_spectrum_employment_status&#xA;     ,catavolt_hash                          = upd.catavolt_hash&#xA;,catavolt_last_changed = GETDATE()&#xA;FROM [dbo].[catavolt_users]&#x9;&#x9;dest&#xA;JOIN [dbo].[catavolt_users_staging]&#x9;upd ON dest.catavolt_spectrum_code = upd.catavolt_spectrum_code;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
   </DTS:Executables>
@@ -2128,6 +3624,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 2"
       DTS:To="Package\(SQL) Drop Update Table" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 3]"
+      DTS:CreationName=""
+      DTS:DTSID="{FC1C13C7-448A-4E16-B807-BDF87E920DDE}"
+      DTS:From="Package\(SQL) Trunc Exception Table"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 3"
+      DTS:To="Package\(SQL) Create Update Table" />
   </DTS:PrecedenceConstraints>
   <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
 <!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
@@ -2140,7 +3644,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
     design-time-name="Package">
     <LayoutInfo>
       <GraphLayout
-        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="262,42"
           Id="Package\(DFT) Load Data Into Destination Task"
@@ -2223,6 +3727,36 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
+        <NodeLayout
+          Size="199,42"
+          Id="Package\(DFT) Load Initial Hashes"
+          TopLeft="246,172" />
+        <NodeLayout
+          Size="214,42"
+          Id="Package\(SQL) Trunc Exception Table"
+          TopLeft="764,8" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 3]"
+          TopLeft="870.5,50">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{x:Null}"
+              EndConnector="0,36"
+              Start="0,0"
+              End="0,28.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,28.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </Package>
@@ -2230,15 +3764,15 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
     design-time-name="Package\(DFT) Load Data Into Destination Task">
     <LayoutInfo>
       <GraphLayout
-        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph" xmlns:mssge="clr-namespace:Microsoft.SqlServer.Graph.Extended;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+        Capacity="32" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph" xmlns:mssge="clr-namespace:Microsoft.SqlServer.Graph.Extended;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
         <NodeLayout
           Size="156,42"
           Id="Package\(DFT) Load Data Into Destination Task\Data Conversion"
-          TopLeft="808.629629445665,225.881227069179" />
+          TopLeft="806.629629445665,310.881227069179" />
         <NodeLayout
           Size="113,42"
           Id="Package\(DFT) Load Data Into Destination Task\Lookup"
-          TopLeft="827,322" />
+          TopLeft="825,407" />
         <NodeLayout
           Size="150,42"
           Id="Package\(DFT) Load Data Into Destination Task\OLE DB Source"
@@ -2246,22 +3780,22 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
         <NodeLayout
           Size="163,42"
           Id="Package\(DFT) Load Data Into Destination Task\Script Component"
-          TopLeft="804.092606717421,148.720307384808" />
+          TopLeft="802.092606717421,233.720307384808" />
         <NodeLayout
-          Size="166,42"
-          Id="Package\(DFT) Load Data Into Destination Task\OLE DB Command"
-          TopLeft="966.85184383098,432.463601843781" />
+          Size="193,42"
+          Id="Package\(DFT) Load Data Into Destination Task\(DEST) Load Base Table"
+          TopLeft="964.85184383098,517.463601843781" />
+        <NodeLayout
+          Size="206,42"
+          Id="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table"
+          TopLeft="637.462958750166,593.969359371303" />
         <NodeLayout
           Size="193,42"
           Id="Package\(DFT) Load Data Into Destination Task\(CSPL) Compare Hashes"
-          TopLeft="639.074069916466,426.934874057455" />
-        <NodeLayout
-          Size="171,42"
-          Id="Package\(DFT) Load Data Into Destination Task\OLE DB Destination"
-          TopLeft="639.462958750166,508.969359371303" />
+          TopLeft="637.074069916466,511.934874057455" />
         <EdgeLayout
           Id="Package\(DFT) Load Data Into Destination Task.Paths[Output 0]"
-          TopLeft="886.02778474821,190.498085162586">
+          TopLeft="884.02778474821,275.498085162586">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{x:Null}"
@@ -2282,36 +3816,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\(DFT) Load Data Into Destination Task.Paths[OLE DB Source Output]"
-          TopLeft="883.79630335871,121">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{x:Null}"
-              EndConnector="0,27.720307384808"
-              Start="0,0"
-              End="0,20.220307384808">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,20.220307384808" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
           Id="Package\(DFT) Load Data Into Destination Task.Paths[Lookup No Match Output]"
-          TopLeft="901,364">
+          TopLeft="899,449">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{x:Null}"
-              EndConnector="148.85184383098,68.463601843781"
+              EndConnector="162.35184383098,68.463601843781"
               Start="0,0"
-              End="148.85184383098,60.963601843781">
+              End="162.35184383098,60.963601843781">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
@@ -2322,26 +3834,26 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
                     Point2="0,27.9589578210205"
                     Point3="4,27.9589578210205" />
                   <mssgle:LineSegment
-                    End="144.85184383098,27.9589578210205" />
+                    End="158.35184383098,27.9589578210205" />
                   <mssgle:CubicBezierSegment
-                    Point1="144.85184383098,27.9589578210205"
-                    Point2="148.85184383098,27.9589578210205"
-                    Point3="148.85184383098,31.9589578210205" />
+                    Point1="158.35184383098,27.9589578210205"
+                    Point2="162.35184383098,27.9589578210205"
+                    Point3="162.35184383098,31.9589578210205" />
                   <mssgle:LineSegment
-                    End="148.85184383098,60.963601843781" />
+                    End="162.35184383098,60.963601843781" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="18.61953519674,32.9589578210205,111.6127734375,11.609375"
+              BoundingBox="25.36953519674,32.9589578210205,111.6127734375,11.609375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\(DFT) Load Data Into Destination Task.Paths[Lookup Match Output]"
-          TopLeft="865.962962962963,363.777777777778">
+          TopLeft="863.962962962963,448.777777777778">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{x:Null}"
@@ -2377,7 +3889,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\(DFT) Load Data Into Destination Task.Paths[Data Conversion Output]"
-          TopLeft="885.037036945055,267.659004846957">
+          TopLeft="883.037036945055,352.659004846957">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{x:Null}"
@@ -2399,37 +3911,25 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\(DFT) Load Data Into Destination Task.Paths[Changed Rows]"
-          TopLeft="735.574069916466,468.934874057455">
+          TopLeft="737.018514333316,553.934874057455">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{x:Null}"
-              EndConnector="-10.6111111663,40.034485313848"
+              EndConnector="0,40.034485313848"
               Start="0,0"
-              End="-10.6111111663,32.534485313848">
+              End="0,32.534485313848">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,16.017242656924" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,16.017242656924"
-                    Point2="0,20.017242656924"
-                    Point3="-4,20.017242656924" />
-                  <mssgle:LineSegment
-                    End="-6.61111116630002,20.017242656924" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-6.61111116630002,20.017242656924"
-                    Point2="-10.6111111663,20.017242656924"
-                    Point3="-10.6111111663,24.017242656924" />
-                  <mssgle:LineSegment
-                    End="-10.6111111663,32.534485313848" />
+                    End="0,32.534485313848" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-38.7456532394,25.017242656924,66.8801953125,11.6630859375"
+              BoundingBox="-33.44009765625,10.435699688174,66.8801953125,11.6630859375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -2438,7 +3938,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
           ParentId="Package\(DFT) Load Data Into Destination Task"
           Size="210,37"
           Id="7e750857-fb18-4d58-9360-281ada0d64ea"
-          TopLeft="974,321">
+          TopLeft="972,406">
           <AnnotationLayout.FontInfo>
             <mssge:FontInfo
               Color="#FFF1F1F1">
@@ -2468,7 +3968,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
           ParentId="Package\(DFT) Load Data Into Destination Task"
           Size="164,37"
           Id="f01ab44f-15a5-477b-bee3-3e217fba0c73"
-          TopLeft="973,194">
+          TopLeft="974,315">
           <AnnotationLayout.FontInfo>
             <mssge:FontInfo
               Color="#FFF1F1F1">
@@ -2478,6 +3978,84 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
             </mssge:FontInfo>
           </AnnotationLayout.FontInfo>
         </AnnotationLayout>
+        <NodeLayout
+          Size="155,42"
+          Id="Package\(DFT) Load Data Into Destination Task\Conditional Split"
+          TopLeft="805,151" />
+        <EdgeLayout
+          Id="Package\(DFT) Load Data Into Destination Task.Paths[OLE DB Source Output]"
+          TopLeft="882.25,121">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{x:Null}"
+              EndConnector="0,30"
+              Start="0,0"
+              End="0,22.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,22.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\(DFT) Load Data Into Destination Task.Paths[Conditional Split Default Output]"
+          TopLeft="883.04630335871,193">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{x:Null}"
+              EndConnector="0,40.720307384808"
+              Start="0,0"
+              End="0,33.220307384808">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,33.220307384808" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-70.61390625,10.781052129904,141.2278125,11.658203125"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="216,42"
+          Id="Package\(DFT) Load Data Into Destination Task\(DEST) Load Exception Table"
+          TopLeft="497,150" />
+        <EdgeLayout
+          Id="Package\(DFT) Load Data Into Destination Task.Paths[First Name Missing]"
+          TopLeft="805,171.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{x:Null}"
+              EndConnector="-92,0"
+              Start="0,0"
+              End="-84.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-84.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-84.07798828125,5,83.6559765625,11.384765625"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
@@ -2513,7 +4091,105 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\(DFT) Load Data Into Destination Task\OLE DB Destination">
+    design-time-name="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost
+    design-time-name="Package\(DFT) Load Initial Hashes">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="150,42"
+          Id="Package\(DFT) Load Initial Hashes\OLE DB Source"
+          TopLeft="704.907393282579,126" />
+        <NodeLayout
+          Size="163,42"
+          Id="Package\(DFT) Load Initial Hashes\Script Component"
+          TopLeft="702,195.720307384808" />
+        <EdgeLayout
+          Id="Package\(DFT) Load Initial Hashes.Paths[OLE DB Source Output]"
+          TopLeft="781.703696641289,168">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{x:Null}"
+              EndConnector="0,27.720307384808"
+              Start="0,0"
+              End="0,20.220307384808">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,20.220307384808" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="171,42"
+          Id="Package\(DFT) Load Initial Hashes\OLE DB Destination"
+          TopLeft="695,325" />
+        <EdgeLayout
+          Id="Package\(DFT) Load Initial Hashes.Paths[Output 0]"
+          TopLeft="782,237.720307384808">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{x:Null}"
+              EndConnector="0,87.279692615192"
+              Start="0,0"
+              End="0,79.779692615192">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,79.779692615192" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\(DFT) Load Initial Hashes\OLE DB Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\(DFT) Load Initial Hashes\OLE DB Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\(DFT) Load Data Into Destination Task\(DEST) Load Exception Table">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
