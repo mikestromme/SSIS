@@ -12,8 +12,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="load_catavolt_users"
   DTS:PackageType="5"
-  DTS:VersionBuild="97"
-  DTS:VersionGUID="{EC56F516-6A99-43B0-86CA-994BA7A01099}">
+  DTS:VersionBuild="103"
+  DTS:VersionGUID="{19F955F8-7263-41A4-98ED-ABD2FB97EB45}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">6</DTS:Property>
   <DTS:ConnectionManagers>
@@ -30,7 +30,7 @@
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAh/EXNc7gKUaU22pfkx84IgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAA7hb1w3Sx7WGtoCq/+bZvdAAAAAASAAACgAAAAEAAAAHdhfXqsUGIOmBxoB0rKEEYYAAAA4LDn2e6Zv2LCcFTmKKdYZz7gG1HkBCetFAAAAINknREBZC/YYNj4jHJUtkmarDYO</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAh/EXNc7gKUaU22pfkx84IgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAABw5jfFtnbJCF6E1uOsMVjCAAAAAASAAACgAAAAEAAAADuUoC5F8f6de5rTSz1NAv0YAAAAjhjVyYleg9PoXMFDTdjkSxhdkumDytGdFAAAAGsV7sUgzS/ecEnq5NAYPLxGMeff</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -256,7 +256,7 @@
                       cachedLength="11"
                       cachedName="Employee_Code"
                       externalMetadataColumnId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Base Table.Inputs[OLE DB Command Input].ExternalColumns[Param_1]"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[Employee_Code]" />
+                      lineageId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Output].Columns[Employee_Code]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -400,7 +400,7 @@
                       cachedLength="11"
                       cachedName="Employee_Code"
                       externalMetadataColumnId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Exception Table.Inputs[OLE DB Destination Input].ExternalColumns[catavolt_users_spectrum_code]"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[Employee_Code]" />
+                      lineageId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Output].Columns[Employee_Code]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -517,7 +517,7 @@
                       cachedLength="11"
                       cachedName="Employee_Code"
                       externalMetadataColumnId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[catavolt_spectrum_code]"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[Employee_Code]" />
+                      lineageId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Output].Columns[Employee_Code]" />
                     <inputColumn
                       refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Inputs[OLE DB Destination Input].Columns[Worker_Comp_Code]"
                       cachedCodepage="1252"
@@ -525,7 +525,7 @@
                       cachedLength="6"
                       cachedName="Worker_Comp_Code"
                       externalMetadataColumnId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[catavolt_spectrum_workers_comp_code]"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[Worker_Comp_Code]" />
+                      lineageId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Output].Columns[Worker_Comp_Code]" />
                     <inputColumn
                       refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Inputs[OLE DB Destination Input].Columns[Hash]"
                       cachedCodepage="1252"
@@ -541,7 +541,7 @@
                       cachedLength="1"
                       cachedName="Employment_Status"
                       externalMetadataColumnId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[catavolt_spectrum_employment_status]"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[Employment_Status]" />
+                      lineageId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Output].Columns[Employment_Status]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -598,6 +598,244 @@
               </outputs>
             </component>
             <component
+              refId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data"
+              componentClassID="DTSAdapter.OLEDBSource.3"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="(SRC) Get Spectrum Data"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">select DISTINCT First_Name, Last_Name, Employee_Code,  Worker_Comp_Code, Employment_Status, Title
+from Spectrum_Employee
+where Company_Code IN ('CPR','SUB')
+--and Employment_Status IN ('T', 'A')
+--and Employee_Code = 'WILSUNL'
+and Employee_Date_List1 &gt;'2018-12-08' -- anyone hired after this date
+--and First_Name = ''</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[10.1.1.7.xalt_dev.svc_xalt]"
+                  connectionManagerRefId="Package.ConnectionManagers[10.1.1.7.xalt_dev.svc_xalt]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Output].Columns[First_Name]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Output].ExternalColumns[First_Name]"
+                      length="20"
+                      lineageId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Output].Columns[First_Name]"
+                      name="First_Name"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Output].Columns[Last_Name]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Output].ExternalColumns[Last_Name]"
+                      length="30"
+                      lineageId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Output].Columns[Last_Name]"
+                      name="Last_Name"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Output].Columns[Employee_Code]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Output].ExternalColumns[Employee_Code]"
+                      length="11"
+                      lineageId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Output].Columns[Employee_Code]"
+                      name="Employee_Code"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Output].Columns[Worker_Comp_Code]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Output].ExternalColumns[Worker_Comp_Code]"
+                      length="6"
+                      lineageId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Output].Columns[Worker_Comp_Code]"
+                      name="Worker_Comp_Code"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Output].Columns[Employment_Status]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Output].ExternalColumns[Employment_Status]"
+                      length="1"
+                      lineageId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Output].Columns[Employment_Status]"
+                      name="Employment_Status"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Output].Columns[Title]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Output].ExternalColumns[Title]"
+                      length="50"
+                      lineageId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Output].Columns[Title]"
+                      name="Title"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Output].ExternalColumns[First_Name]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="First_Name" />
+                    <externalMetadataColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Output].ExternalColumns[Last_Name]"
+                      codePage="1252"
+                      dataType="str"
+                      length="30"
+                      name="Last_Name" />
+                    <externalMetadataColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Output].ExternalColumns[Employee_Code]"
+                      codePage="1252"
+                      dataType="str"
+                      length="11"
+                      name="Employee_Code" />
+                    <externalMetadataColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Output].ExternalColumns[Worker_Comp_Code]"
+                      codePage="1252"
+                      dataType="str"
+                      length="6"
+                      name="Worker_Comp_Code" />
+                    <externalMetadataColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Output].ExternalColumns[Employment_Status]"
+                      codePage="1252"
+                      dataType="str"
+                      length="1"
+                      name="Employment_Status" />
+                    <externalMetadataColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Output].ExternalColumns[Title]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="Title" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Error Output].Columns[First_Name]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Error Output].Columns[First_Name]"
+                      name="First_Name" />
+                    <outputColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Error Output].Columns[Last_Name]"
+                      codePage="1252"
+                      dataType="str"
+                      length="30"
+                      lineageId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Error Output].Columns[Last_Name]"
+                      name="Last_Name" />
+                    <outputColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Error Output].Columns[Employee_Code]"
+                      codePage="1252"
+                      dataType="str"
+                      length="11"
+                      lineageId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Error Output].Columns[Employee_Code]"
+                      name="Employee_Code" />
+                    <outputColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Error Output].Columns[Worker_Comp_Code]"
+                      codePage="1252"
+                      dataType="str"
+                      length="6"
+                      lineageId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Error Output].Columns[Worker_Comp_Code]"
+                      name="Worker_Comp_Code" />
+                    <outputColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Error Output].Columns[Employment_Status]"
+                      codePage="1252"
+                      dataType="str"
+                      length="1"
+                      lineageId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Error Output].Columns[Employment_Status]"
+                      name="Employment_Status" />
+                    <outputColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Error Output].Columns[Title]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Error Output].Columns[Title]"
+                      name="Title" />
+                    <outputColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
               refId="Package\(DFT) Load Data Into Destination Task\Conditional Split"
               componentClassID="DTSTransform.ConditionalSplit.3"
               contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
@@ -616,7 +854,7 @@
                       cachedDataType="str"
                       cachedLength="20"
                       cachedName="First_Name"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[First_Name]" />
+                      lineageId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Output].Columns[First_Name]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -636,7 +874,7 @@
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">[LEN]([RTRIM](#{Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[First_Name]})) == 0</property>
+                      name="Expression">[LEN]([RTRIM](#{Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Output].Columns[First_Name]})) == 0</property>
                     <property
                       containsID="true"
                       dataType="System.String"
@@ -706,7 +944,7 @@
                       cachedDataType="str"
                       cachedLength="11"
                       cachedName="Employee_Code"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[Employee_Code]" />
+                      lineageId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Output].Columns[Employee_Code]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -732,7 +970,7 @@
                           containsID="true"
                           dataType="System.Int32"
                           description="Specifies the input column used as the source of data for the conversion."
-                          name="SourceInputColumnLineageID">#{Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[Employee_Code]}</property>
+                          name="SourceInputColumnLineageID">#{Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Output].Columns[Employee_Code]}</property>
                         <property
                           dataType="System.Boolean"
                           description="Indicates whether the column uses the faster, locale-neutral parsing routines."
@@ -934,244 +1172,6 @@ where [refTable].[catavolt_spectrum_code] = ?</property>
                       refId="Package\(DFT) Load Data Into Destination Task\Lookup.Outputs[Lookup Error Output].Columns[ErrorColumn]"
                       dataType="i4"
                       lineageId="Package\(DFT) Load Data Into Destination Task\Lookup.Outputs[Lookup Error Output].Columns[ErrorColumn]"
-                      name="ErrorColumn"
-                      specialFlags="2" />
-                  </outputColumns>
-                  <externalMetadataColumns />
-                </output>
-              </outputs>
-            </component>
-            <component
-              refId="Package\(DFT) Load Data Into Destination Task\OLE DB Source"
-              componentClassID="DTSAdapter.OLEDBSource.3"
-              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
-              description="OLE DB Source"
-              name="OLE DB Source"
-              usesDispositions="true"
-              version="7">
-              <properties>
-                <property
-                  dataType="System.Int32"
-                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
-                  name="CommandTimeout">0</property>
-                <property
-                  dataType="System.String"
-                  description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset"></property>
-                <property
-                  dataType="System.String"
-                  description="Specifies the variable that contains the name of the database object used to open a rowset."
-                  name="OpenRowsetVariable"></property>
-                <property
-                  dataType="System.String"
-                  description="The SQL command to be executed."
-                  name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">select DISTINCT First_Name, Last_Name, Employee_Code,  Worker_Comp_Code, Employment_Status, Title
-from Spectrum_Employee
-where Company_Code IN ('CPR','SUB')
---and Employment_Status IN ('T', 'A')
---and Employee_Code = 'WILSUNL'
-and Employee_Date_List1 &gt;'2018-12-13' -- anyone hired after this date
---and First_Name = ''</property>
-                <property
-                  dataType="System.String"
-                  description="The variable that contains the SQL command to be executed."
-                  name="SqlCommandVariable"></property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies the column code page to use when code page information is unavailable from the data source."
-                  name="DefaultCodePage">1252</property>
-                <property
-                  dataType="System.Boolean"
-                  description="Forces the use of the DefaultCodePage property value when describing character data."
-                  name="AlwaysUseDefaultCodePage">false</property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies the mode used to access the database."
-                  name="AccessMode"
-                  typeConverter="AccessMode">2</property>
-                <property
-                  dataType="System.String"
-                  description="The mappings between the parameters in the SQL command and variables."
-                  name="ParameterMapping"></property>
-              </properties>
-              <connections>
-                <connection
-                  refId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Connections[OleDbConnection]"
-                  connectionManagerID="Package.ConnectionManagers[10.1.1.7.xalt_dev.svc_xalt]"
-                  connectionManagerRefId="Package.ConnectionManagers[10.1.1.7.xalt_dev.svc_xalt]"
-                  description="The OLE DB runtime connection used to access the database."
-                  name="OleDbConnection" />
-              </connections>
-              <outputs>
-                <output
-                  refId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output]"
-                  name="OLE DB Source Output">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[First_Name]"
-                      codePage="1252"
-                      dataType="str"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[First_Name]"
-                      length="20"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[First_Name]"
-                      name="First_Name"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[Last_Name]"
-                      codePage="1252"
-                      dataType="str"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Last_Name]"
-                      length="30"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[Last_Name]"
-                      name="Last_Name"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[Employee_Code]"
-                      codePage="1252"
-                      dataType="str"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Employee_Code]"
-                      length="11"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[Employee_Code]"
-                      name="Employee_Code"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[Worker_Comp_Code]"
-                      codePage="1252"
-                      dataType="str"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Worker_Comp_Code]"
-                      length="6"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[Worker_Comp_Code]"
-                      name="Worker_Comp_Code"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[Employment_Status]"
-                      codePage="1252"
-                      dataType="str"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Employment_Status]"
-                      length="1"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[Employment_Status]"
-                      name="Employment_Status"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[Title]"
-                      codePage="1252"
-                      dataType="str"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Title]"
-                      length="50"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[Title]"
-                      name="Title"
-                      truncationRowDisposition="FailComponent" />
-                  </outputColumns>
-                  <externalMetadataColumns
-                    isUsed="True">
-                    <externalMetadataColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[First_Name]"
-                      codePage="1252"
-                      dataType="str"
-                      length="20"
-                      name="First_Name" />
-                    <externalMetadataColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Last_Name]"
-                      codePage="1252"
-                      dataType="str"
-                      length="30"
-                      name="Last_Name" />
-                    <externalMetadataColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Employee_Code]"
-                      codePage="1252"
-                      dataType="str"
-                      length="11"
-                      name="Employee_Code" />
-                    <externalMetadataColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Worker_Comp_Code]"
-                      codePage="1252"
-                      dataType="str"
-                      length="6"
-                      name="Worker_Comp_Code" />
-                    <externalMetadataColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Employment_Status]"
-                      codePage="1252"
-                      dataType="str"
-                      length="1"
-                      name="Employment_Status" />
-                    <externalMetadataColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Title]"
-                      codePage="1252"
-                      dataType="str"
-                      length="50"
-                      name="Title" />
-                  </externalMetadataColumns>
-                </output>
-                <output
-                  refId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Error Output]"
-                  isErrorOut="true"
-                  name="OLE DB Source Error Output">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[First_Name]"
-                      codePage="1252"
-                      dataType="str"
-                      length="20"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[First_Name]"
-                      name="First_Name" />
-                    <outputColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Last_Name]"
-                      codePage="1252"
-                      dataType="str"
-                      length="30"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Last_Name]"
-                      name="Last_Name" />
-                    <outputColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Employee_Code]"
-                      codePage="1252"
-                      dataType="str"
-                      length="11"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Employee_Code]"
-                      name="Employee_Code" />
-                    <outputColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Worker_Comp_Code]"
-                      codePage="1252"
-                      dataType="str"
-                      length="6"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Worker_Comp_Code]"
-                      name="Worker_Comp_Code" />
-                    <outputColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Employment_Status]"
-                      codePage="1252"
-                      dataType="str"
-                      length="1"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Employment_Status]"
-                      name="Employment_Status" />
-                    <outputColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Title]"
-                      codePage="1252"
-                      dataType="str"
-                      length="50"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Title]"
-                      name="Title" />
-                    <outputColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
-                      dataType="i4"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
-                      name="ErrorCode"
-                      specialFlags="1" />
-                    <outputColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
-                      dataType="i4"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -2104,14 +2104,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
                       cachedDataType="str"
                       cachedLength="6"
                       cachedName="Worker_Comp_Code"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[Worker_Comp_Code]" />
+                      lineageId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Output].Columns[Worker_Comp_Code]" />
                     <inputColumn
                       refId="Package\(DFT) Load Data Into Destination Task\Script Component.Inputs[Input 0].Columns[Employment_Status]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="1"
                       cachedName="Employment_Status"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[Employment_Status]" />
+                      lineageId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Output].Columns[Employment_Status]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -2170,7 +2170,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
               refId="Package\(DFT) Load Data Into Destination Task.Paths[OLE DB Source Output]"
               endId="Package\(DFT) Load Data Into Destination Task\Conditional Split.Inputs[Conditional Split Input]"
               name="OLE DB Source Output"
-              startId="Package\(DFT) Load Data Into Destination Task\OLE DB Source.Outputs[OLE DB Source Output]" />
+              startId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Output]" />
             <path
               refId="Package\(DFT) Load Data Into Destination Task.Paths[Output 0]"
               endId="Package\(DFT) Load Data Into Destination Task\Data Conversion.Inputs[Data Conversion Input]"
@@ -3650,6 +3650,10 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
           Id="Package\(DFT) Load Data Into Destination Task"
           TopLeft="744,175" />
         <NodeLayout
+          Size="199,42"
+          Id="Package\(DFT) Load Initial Hashes"
+          TopLeft="246,172" />
+        <NodeLayout
           Size="206,42"
           Id="Package\(SQL) Create Update Table"
           TopLeft="767,86" />
@@ -3657,6 +3661,10 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
           Size="198,42"
           Id="Package\(SQL) Drop Update Table"
           TopLeft="773,356" />
+        <NodeLayout
+          Size="214,42"
+          Id="Package\(SQL) Trunc Exception Table"
+          TopLeft="764,8" />
         <NodeLayout
           Size="228,42"
           Id="Package\(SQL) Update Destination Table"
@@ -3727,14 +3735,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="199,42"
-          Id="Package\(DFT) Load Initial Hashes"
-          TopLeft="246,172" />
-        <NodeLayout
-          Size="214,42"
-          Id="Package\(SQL) Trunc Exception Table"
-          TopLeft="764,8" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 3]"
           TopLeft="870.5,50">
@@ -3766,29 +3766,37 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
       <GraphLayout
         Capacity="32" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph" xmlns:mssge="clr-namespace:Microsoft.SqlServer.Graph.Extended;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
         <NodeLayout
-          Size="156,42"
-          Id="Package\(DFT) Load Data Into Destination Task\Data Conversion"
-          TopLeft="806.629629445665,310.881227069179" />
-        <NodeLayout
-          Size="113,42"
-          Id="Package\(DFT) Load Data Into Destination Task\Lookup"
-          TopLeft="825,407" />
-        <NodeLayout
-          Size="150,42"
-          Id="Package\(DFT) Load Data Into Destination Task\OLE DB Source"
-          TopLeft="807,79" />
-        <NodeLayout
-          Size="163,42"
-          Id="Package\(DFT) Load Data Into Destination Task\Script Component"
-          TopLeft="802.092606717421,233.720307384808" />
+          Size="206,42"
+          Id="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table"
+          TopLeft="637.462958750166,593.969359371303" />
         <NodeLayout
           Size="193,42"
           Id="Package\(DFT) Load Data Into Destination Task\(DEST) Load Base Table"
           TopLeft="964.85184383098,517.463601843781" />
         <NodeLayout
-          Size="206,42"
-          Id="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table"
-          TopLeft="637.462958750166,593.969359371303" />
+          Size="216,42"
+          Id="Package\(DFT) Load Data Into Destination Task\(DEST) Load Exception Table"
+          TopLeft="497,150" />
+        <NodeLayout
+          Size="113,42"
+          Id="Package\(DFT) Load Data Into Destination Task\Lookup"
+          TopLeft="825,407" />
+        <NodeLayout
+          Size="155,42"
+          Id="Package\(DFT) Load Data Into Destination Task\Conditional Split"
+          TopLeft="805,151" />
+        <NodeLayout
+          Size="156,42"
+          Id="Package\(DFT) Load Data Into Destination Task\Data Conversion"
+          TopLeft="806.629629445665,310.881227069179" />
+        <NodeLayout
+          Size="199,42"
+          Id="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data"
+          TopLeft="807,79" />
+        <NodeLayout
+          Size="163,42"
+          Id="Package\(DFT) Load Data Into Destination Task\Script Component"
+          TopLeft="802.092606717421,233.720307384808" />
         <NodeLayout
           Size="193,42"
           Id="Package\(DFT) Load Data Into Destination Task\(CSPL) Compare Hashes"
@@ -3807,6 +3815,42 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
                   Capacity="5">
                   <mssgle:LineSegment
                     End="0,27.8831419065932" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-8,5.9415709532966,16,16"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\(DFT) Load Data Into Destination Task.Paths[OLE DB Source Output]"
+          TopLeft="906.5,121">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{x:Null}"
+              EndConnector="-24,30"
+              Start="0,0"
+              End="-24,22.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,11" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,11"
+                    Point2="0,15"
+                    Point3="-4,15" />
+                  <mssgle:LineSegment
+                    End="-20,15" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-20,15"
+                    Point2="-24,15"
+                    Point3="-24,19" />
+                  <mssgle:LineSegment
+                    End="-24,22.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -3888,6 +3932,30 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
+          Id="Package\(DFT) Load Data Into Destination Task.Paths[First Name Missing]"
+          TopLeft="805,171.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{x:Null}"
+              EndConnector="-92,0"
+              Start="0,0"
+              End="-84.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-84.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-84.07798828125,5,83.6559765625,11.384765625"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
           Id="Package\(DFT) Load Data Into Destination Task.Paths[Data Conversion Output]"
           TopLeft="883.037036945055,352.659004846957">
           <EdgeLayout.Curve>
@@ -3907,6 +3975,30 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\(DFT) Load Data Into Destination Task.Paths[Conditional Split Default Output]"
+          TopLeft="883.04630335871,193">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{x:Null}"
+              EndConnector="0,40.720307384808"
+              Start="0,0"
+              End="0,33.220307384808">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,33.220307384808" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-70.61390625,10.781052129904,141.2278125,11.658203125"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -3978,87 +4070,35 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
             </mssge:FontInfo>
           </AnnotationLayout.FontInfo>
         </AnnotationLayout>
-        <NodeLayout
-          Size="155,42"
-          Id="Package\(DFT) Load Data Into Destination Task\Conditional Split"
-          TopLeft="805,151" />
-        <EdgeLayout
-          Id="Package\(DFT) Load Data Into Destination Task.Paths[OLE DB Source Output]"
-          TopLeft="882.25,121">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{x:Null}"
-              EndConnector="0,30"
-              Start="0,0"
-              End="0,22.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,22.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\(DFT) Load Data Into Destination Task.Paths[Conditional Split Default Output]"
-          TopLeft="883.04630335871,193">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{x:Null}"
-              EndConnector="0,40.720307384808"
-              Start="0,0"
-              End="0,33.220307384808">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,33.220307384808" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-70.61390625,10.781052129904,141.2278125,11.658203125"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="216,42"
-          Id="Package\(DFT) Load Data Into Destination Task\(DEST) Load Exception Table"
-          TopLeft="497,150" />
-        <EdgeLayout
-          Id="Package\(DFT) Load Data Into Destination Task.Paths[First Name Missing]"
-          TopLeft="805,171.5">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{x:Null}"
-              EndConnector="-92,0"
-              Start="0,0"
-              End="-84.5,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="-84.5,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-84.07798828125,5,83.6559765625,11.384765625"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\(DFT) Load Data Into Destination Task\(DEST) Load Exception Table">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
   <PipelineComponentMetadata
     design-time-name="Package\(DFT) Load Data Into Destination Task\Lookup">
     <Properties>
@@ -4083,23 +4123,10 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\(DFT) Load Data Into Destination Task\OLE DB Source">
+    design-time-name="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
@@ -4107,37 +4134,15 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
     design-time-name="Package\(DFT) Load Initial Hashes">
     <LayoutInfo>
       <GraphLayout
-        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-        <NodeLayout
-          Size="150,42"
-          Id="Package\(DFT) Load Initial Hashes\OLE DB Source"
-          TopLeft="704.907393282579,126" />
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
           Size="163,42"
           Id="Package\(DFT) Load Initial Hashes\Script Component"
           TopLeft="702,195.720307384808" />
-        <EdgeLayout
-          Id="Package\(DFT) Load Initial Hashes.Paths[OLE DB Source Output]"
-          TopLeft="781.703696641289,168">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{x:Null}"
-              EndConnector="0,27.720307384808"
-              Start="0,0"
-              End="0,20.220307384808">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,20.220307384808" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
+        <NodeLayout
+          Size="150,42"
+          Id="Package\(DFT) Load Initial Hashes\OLE DB Source"
+          TopLeft="704.907393282579,126" />
         <NodeLayout
           Size="171,42"
           Id="Package\(DFT) Load Initial Hashes\OLE DB Destination"
@@ -4161,7 +4166,33 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\(DFT) Load Initial Hashes.Paths[OLE DB Source Output]"
+          TopLeft="781.703696641289,168">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{x:Null}"
+              EndConnector="0,27.720307384808"
+              Start="0,0"
+              End="0,20.220307384808">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,20.220307384808" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -4177,19 +4208,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
     design-time-name="Package\(DFT) Load Initial Hashes\OLE DB Destination">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\(DFT) Load Data Into Destination Task\(DEST) Load Exception Table">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
