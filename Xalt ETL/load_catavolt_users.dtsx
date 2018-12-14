@@ -12,8 +12,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="load_catavolt_users"
   DTS:PackageType="5"
-  DTS:VersionBuild="104"
-  DTS:VersionGUID="{AE704506-E788-486B-A74C-6D973D047D8F}">
+  DTS:VersionBuild="105"
+  DTS:VersionGUID="{974D105A-FE61-4AF7-BB9F-A1C5F889C2A7}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">6</DTS:Property>
   <DTS:ConnectionManagers>
@@ -30,7 +30,7 @@
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAh/EXNc7gKUaU22pfkx84IgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAC2eeAptA/0ouWIcNP+JbjfAAAAAASAAACgAAAAEAAAAEGN/bLsiyXmdATLgV4zzNYYAAAAvRivP9K/Vg3AoxSCoS59YAX5q/UyVlN/FAAAAPDK04rtBcnR2d5XJiKVlKSDADzm</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAh/EXNc7gKUaU22pfkx84IgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAC+8t+TwlnrOcyZtHPZZ2+BAAAAAASAAACgAAAAEAAAACdXzfUwhM0KD+i7ChLbS5wYAAAA0vlKQPben/MYmzGKk7B5sVr6ObTyATSrFAAAAPiZNaozkfO5L6yYZwIzMjtZjuxo</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -3776,7 +3776,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
         <NodeLayout
           Size="216,42"
           Id="Package\(DFT) Load Data Into Destination Task\(DEST) Load Exception Table"
-          TopLeft="497,150" />
+          TopLeft="437,152" />
         <NodeLayout
           Size="113,42"
           Id="Package\(DFT) Load Data Into Destination Task\Lookup"
@@ -3792,7 +3792,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
         <NodeLayout
           Size="199,42"
           Id="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data"
-          TopLeft="807,79" />
+          TopLeft="779,52" />
         <NodeLayout
           Size="163,42"
           Id="Package\(DFT) Load Data Into Destination Task\Script Component"
@@ -3825,30 +3825,18 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\(DFT) Load Data Into Destination Task.Paths[OLE DB Source Output]"
-          TopLeft="906.5,121">
+          TopLeft="880.5,94">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{x:Null}"
-              EndConnector="-24,30"
+              EndConnector="0,57"
               Start="0,0"
-              End="-24,22.5">
+              End="0,49.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,11" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,11"
-                    Point2="0,15"
-                    Point3="-4,15" />
-                  <mssgle:LineSegment
-                    End="-20,15" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-20,15"
-                    Point2="-24,15"
-                    Point3="-24,19" />
-                  <mssgle:LineSegment
-                    End="-24,22.5" />
+                    End="0,49.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -3931,25 +3919,25 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\(DFT) Load Data Into Destination Task.Paths[First Name Missing]"
-          TopLeft="805,171.5">
+          TopLeft="805,172.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{x:Null}"
-              EndConnector="-92,0"
+              EndConnector="-152,0"
               Start="0,0"
-              End="-84.5,0">
+              End="-144.5,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="-84.5,0" />
+                    End="-144.5,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-84.07798828125,5,83.6559765625,11.384765625"
+              BoundingBox="-114.07798828125,5,83.6559765625,11.384765625"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -4043,7 +4031,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
           ParentId="Package\(DFT) Load Data Into Destination Task"
           Size="246,37"
           Id="6669054f-05c6-4277-9714-40ece1db70c8"
-          TopLeft="978,83">
+          TopLeft="991,53">
           <AnnotationLayout.FontInfo>
             <mssge:FontInfo
               Color="#FFF1F1F1">
