@@ -1,0 +1,77 @@
+create staging table
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[catavolt_users_staging]') AND type in (N'U'))
+	DROP TABLE [dbo].[UPD_MyDestination];
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[catavolt_users_staging]') AND type in (N'U'))
+BEGIN
+	CREATE TABLE [dbo].[catavolt_users_staging](
+		catavolt_spectrum_code varchar(50)
+		catavolt_spectrum_workers_comp_code varchar(10)
+		catavolt_hash char(66)
+	);
+END
+GO
+
+
+update destination table
+
+UPDATE dest
+SET	 catavolt_spectrum_workers_comp_code = upd.catavolt_spectrum_workers_comp_code
+     ,catavolt_hash                          = upd.catavolt_hash
+FROM [dbo].[catavolt_users]		dest
+JOIN [dbo].[catavolt_users_staging]	upd ON dest.catavolt_spectrum_code = upd.catavolt_spectrum_code;
+
+
+drop staging table
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[catavolt_users_staging]') AND type in (N'U'))
+	DROP TABLE [dbo].[catavolt_users_staging];
+GO
+
+
+
+c# script
+
+using System.Security.Cryptography;
+
+private SHA256 sha = new SHA256CryptoServiceProvider(); // used to create the SHA256 hash
+
+    public override void Input0_ProcessInputRow(Input0Buffer Row)
+    {
+        // concatenate all strings. NULL values are replaced with the empty string.
+        string hashSource =
+              (Row.BirthDate_IsNull ? "" : Row.BirthDate.ToString())
+            + (Row.EmailAddress_IsNull ? "" : Row.EmailAddress.ToString())
+            + (Row.EnglishEducation_IsNull ? "" : Row.EnglishEducation.ToString())
+            + (Row.EnglishOccupation_IsNull ? "" : Row.EnglishOccupation.ToString())
+            + (Row.FirstName_IsNull ? "" : Row.FirstName.ToString())
+            + (Row.Gender_IsNull ? "" : Row.Gender.ToString())
+            + (Row.HouseOwnerFlag_IsNull ? "" : Row.HouseOwnerFlag.ToString())
+            + (Row.LastName_IsNull ? "" : Row.LastName.ToString())
+            + (Row.MaritalStatus_IsNull ? "" : Row.MaritalStatus.ToString())
+            + (Row.MiddleName_IsNull ? "" : Row.MiddleName.ToString())
+            + (Row.NumberCarsOwned_IsNull ? "" : Row.NumberCarsOwned.ToString())
+            + (Row.NumberChildrenAtHome_IsNull ? "" : Row.NumberChildrenAtHome.ToString())
+            + (Row.Suffix_IsNull ? "" : Row.Suffix.ToString())
+            + (Row.Title_IsNull ? "" : Row.Title.ToString())
+            + (Row.TotalChildren_IsNull ? "" : Row.TotalChildren.ToString())
+            + (Row.YearlyIncome_IsNull ? "" : Row.TotalChildren.ToString());
+
+        byte[] hashBytes = sha.ComputeHash(System.Text.UnicodeEncoding.Unicode.GetBytes(hashSource));
+
+		// convert the byte stream to a string
+		System.Text.StringBuilder sb = new System.Text.StringBuilder();
+
+		for (int i = 0; i < hashBytes.Length; i++)
+		{
+			sb.Append(hashBytes[i].ToString("X2"));
+		}
+
+		Row.Hash = "0x" + sb.ToString(); // add the result to the output
+    }
+	
+	
+	0x7616354D47ED2864AAC9DAC7A9FD6F57D69D0082BA27E45A19B385B61341CD75
+	0x7616354D47ED2864AAC9DAC7A9FD6F57D69D0082BA27E45A19B385B61341CD75

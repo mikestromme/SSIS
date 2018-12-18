@@ -12,8 +12,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="load_catavolt_users"
   DTS:PackageType="5"
-  DTS:VersionBuild="105"
-  DTS:VersionGUID="{974D105A-FE61-4AF7-BB9F-A1C5F889C2A7}">
+  DTS:VersionBuild="106"
+  DTS:VersionGUID="{9F48E786-994C-4A9A-AA53-4FED44F35381}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">6</DTS:Property>
   <DTS:ConnectionManagers>
@@ -30,7 +30,7 @@
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAh/EXNc7gKUaU22pfkx84IgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAC+8t+TwlnrOcyZtHPZZ2+BAAAAAASAAACgAAAAEAAAACdXzfUwhM0KD+i7ChLbS5wYAAAA0vlKQPben/MYmzGKk7B5sVr6ObTyATSrFAAAAPiZNaozkfO5L6yYZwIzMjtZjuxo</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAh/EXNc7gKUaU22pfkx84IgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAAIT/KJBU7nqdQGWu3VnIlNAAAAAASAAACgAAAAEAAAAEP49UKiwpRcm+YWzSBThS4YAAAA1s0MZX3Hz+p8HGPY7DT4M4sxl+vyI3QTFAAAAP9km3rRysZPqiZsJLo1WWcJYqDF</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -197,9 +197,9 @@
      
 	 
 	 (( SELECT
-	               RTRIM(LOWER(LEFT(First_Name,1))) + RTRIM(LOWER(LEFT(Last_Name,1))) + RTRIM(LOWER(SUBSTRING(Last_Name,2,LEN(Last_Name)))) as catavolt_user_id
+	               RTRIM(LOWER(LEFT(First_Name,1))) + RTRIM(LOWER(LEFT(Last_Name,1))) + RTRIM(LOWER(SUBSTRING(REPLACE(Last_Name, '''', ''),2,LEN(Last_Name)))) as catavolt_user_id
 		          ,RTRIM(UPPER(LEFT(First_Name,1))) + RTRIM(LOWER(SUBSTRING(First_Name,2,LEN(First_Name)))) + ' ' + RTRIM(UPPER(LEFT(Last_Name,1))) + RTRIM(LOWER(SUBSTRING(Last_Name,2,LEN(Last_Name)))) as catavolt_name
-		          ,RTRIM(LOWER(LEFT(First_Name,1))) + RTRIM(LOWER(LEFT(Last_Name,1))) + RTRIM(LOWER(SUBSTRING(Last_Name,2,LEN(Last_Name)))) + '@suburbanelectric.com' as catavolt_email
+		          ,RTRIM(LOWER(LEFT(First_Name,1))) + RTRIM(LOWER(LEFT(Last_Name,1))) + RTRIM(LOWER(SUBSTRING(REPLACE(Last_Name, '''', ''),2,LEN(Last_Name)))) + '@suburbanelectric.com' as catavolt_email
 				  ,Employee_Code as catavolt_spectrum_code
                   ,0 as catavolt_active
                   ,'2018-09-26' as catavolt_start_date
@@ -3644,7 +3644,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
     design-time-name="Package">
     <LayoutInfo>
       <GraphLayout
-        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="262,42"
           Id="Package\(DFT) Load Data Into Destination Task"
@@ -3674,7 +3674,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
           TopLeft="872.5,128">
           <EdgeLayout.Curve>
             <mssgle:Curve
-              StartConnector="{x:Null}"
+              StartConnector="{assembly:Null}"
               EndConnector="0,47"
               Start="0,0"
               End="0,39.5">
@@ -3696,7 +3696,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
           TopLeft="876.5,217">
           <EdgeLayout.Curve>
             <mssgle:Curve
-              StartConnector="{x:Null}"
+              StartConnector="{assembly:Null}"
               EndConnector="0,46"
               Start="0,0"
               End="0,38.5">
@@ -3718,7 +3718,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
           TopLeft="875,305">
           <EdgeLayout.Curve>
             <mssgle:Curve
-              StartConnector="{x:Null}"
+              StartConnector="{assembly:Null}"
               EndConnector="0,51"
               Start="0,0"
               End="0,43.5">
@@ -3740,7 +3740,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
           TopLeft="870.5,50">
           <EdgeLayout.Curve>
             <mssgle:Curve
-              StartConnector="{x:Null}"
+              StartConnector="{assembly:Null}"
               EndConnector="0,36"
               Start="0,0"
               End="0,28.5">
@@ -3764,7 +3764,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
     design-time-name="Package\(DFT) Load Data Into Destination Task">
     <LayoutInfo>
       <GraphLayout
-        Capacity="32" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph" xmlns:mssge="clr-namespace:Microsoft.SqlServer.Graph.Extended;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+        Capacity="32" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph" xmlns:mssge="clr-namespace:Microsoft.SqlServer.Graph.Extended;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
         <NodeLayout
           Size="206,42"
           Id="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table"
@@ -3782,17 +3782,13 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
           Id="Package\(DFT) Load Data Into Destination Task\Lookup"
           TopLeft="825,407" />
         <NodeLayout
-          Size="155,42"
-          Id="Package\(DFT) Load Data Into Destination Task\Conditional Split"
-          TopLeft="805,151" />
-        <NodeLayout
-          Size="156,42"
-          Id="Package\(DFT) Load Data Into Destination Task\Data Conversion"
-          TopLeft="806.629629445665,310.881227069179" />
-        <NodeLayout
           Size="199,42"
           Id="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data"
           TopLeft="779,52" />
+        <NodeLayout
+          Size="155,42"
+          Id="Package\(DFT) Load Data Into Destination Task\Conditional Split"
+          TopLeft="805,151" />
         <NodeLayout
           Size="163,42"
           Id="Package\(DFT) Load Data Into Destination Task\Script Component"
@@ -3801,12 +3797,16 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
           Size="193,42"
           Id="Package\(DFT) Load Data Into Destination Task\(CSPL) Compare Hashes"
           TopLeft="637.074069916466,511.934874057455" />
+        <NodeLayout
+          Size="156,42"
+          Id="Package\(DFT) Load Data Into Destination Task\Data Conversion"
+          TopLeft="806.629629445665,310.881227069179" />
         <EdgeLayout
           Id="Package\(DFT) Load Data Into Destination Task.Paths[Output 0]"
           TopLeft="884.02778474821,275.498085162586">
           <EdgeLayout.Curve>
             <mssgle:Curve
-              StartConnector="{x:Null}"
+              StartConnector="{assembly:Null}"
               EndConnector="0,35.3831419065932"
               Start="0,0"
               End="0,27.8831419065932">
@@ -3828,7 +3828,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
           TopLeft="880.5,94">
           <EdgeLayout.Curve>
             <mssgle:Curve
-              StartConnector="{x:Null}"
+              StartConnector="{assembly:Null}"
               EndConnector="0,57"
               Start="0,0"
               End="0,49.5">
@@ -3850,7 +3850,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
           TopLeft="899,449">
           <EdgeLayout.Curve>
             <mssgle:Curve
-              StartConnector="{x:Null}"
+              StartConnector="{assembly:Null}"
               EndConnector="162.35184383098,68.463601843781"
               Start="0,0"
               End="162.35184383098,60.963601843781">
@@ -3886,7 +3886,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
           TopLeft="863.962962962963,448.777777777778">
           <EdgeLayout.Curve>
             <mssgle:Curve
-              StartConnector="{x:Null}"
+              StartConnector="{assembly:Null}"
               EndConnector="-130.444448602052,63.1570962796772"
               Start="0,0"
               End="-130.444448602052,55.6570962796772">
@@ -3922,7 +3922,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
           TopLeft="805,172.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
-              StartConnector="{x:Null}"
+              StartConnector="{assembly:Null}"
               EndConnector="-152,0"
               Start="0,0"
               End="-144.5,0">
@@ -3946,7 +3946,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
           TopLeft="883.037036945055,352.659004846957">
           <EdgeLayout.Curve>
             <mssgle:Curve
-              StartConnector="{x:Null}"
+              StartConnector="{assembly:Null}"
               EndConnector="0,54.3409951530433"
               Start="0,0"
               End="0,46.8409951530433">
@@ -3968,7 +3968,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
           TopLeft="883.04630335871,193">
           <EdgeLayout.Curve>
             <mssgle:Curve
-              StartConnector="{x:Null}"
+              StartConnector="{assembly:Null}"
               EndConnector="0,40.720307384808"
               Start="0,0"
               End="0,33.220307384808">
@@ -3992,7 +3992,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
           TopLeft="737.018514333316,553.934874057455">
           <EdgeLayout.Curve>
             <mssgle:Curve
-              StartConnector="{x:Null}"
+              StartConnector="{assembly:Null}"
               EndConnector="0,40.034485313848"
               Start="0,0"
               End="0,32.534485313848">
