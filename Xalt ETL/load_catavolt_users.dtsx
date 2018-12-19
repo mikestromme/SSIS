@@ -12,8 +12,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="load_catavolt_users"
   DTS:PackageType="5"
-  DTS:VersionBuild="106"
-  DTS:VersionGUID="{9F48E786-994C-4A9A-AA53-4FED44F35381}">
+  DTS:VersionBuild="107"
+  DTS:VersionGUID="{799BB015-971D-4A04-8F69-AC3EE1650C34}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">6</DTS:Property>
   <DTS:ConnectionManagers>
@@ -30,7 +30,7 @@
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAh/EXNc7gKUaU22pfkx84IgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAAIT/KJBU7nqdQGWu3VnIlNAAAAAASAAACgAAAAEAAAAEP49UKiwpRcm+YWzSBThS4YAAAA1s0MZX3Hz+p8HGPY7DT4M4sxl+vyI3QTFAAAAP9km3rRysZPqiZsJLo1WWcJYqDF</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAh/EXNc7gKUaU22pfkx84IgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAADL8v/u/IukFNUP3DEuzKEWAAAAAASAAACgAAAAEAAAAMkzOmbaN+RDSbNfp4vuSmAYAAAAQUhv6mABtvKxRuZGLNIAVIcVmE1/KiRbFAAAAL0ITj6qCxuLJ9pn/RUdmTjiZvew</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -439,11 +439,11 @@
               </outputs>
             </component>
             <component
-              refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table"
+              refId="Package\(DFT) Load Data Into Destination Task\(DEST) Update Staging Table"
               componentClassID="DTSAdapter.OLEDBDestination.3"
               contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
               description="OLE DB Destination"
-              name="(DEST) Load Staging Table"
+              name="(DEST) Update Staging Table"
               usesDispositions="true"
               version="4">
               <properties>
@@ -496,7 +496,7 @@
               </properties>
               <connections>
                 <connection
-                  refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Connections[OleDbConnection]"
+                  refId="Package\(DFT) Load Data Into Destination Task\(DEST) Update Staging Table.Connections[OleDbConnection]"
                   connectionManagerID="Package.ConnectionManagers[10.1.1.7.xalt_dev.svc_xalt]"
                   connectionManagerRefId="Package.ConnectionManagers[10.1.1.7.xalt_dev.svc_xalt]"
                   description="The OLE DB runtime connection used to access the database."
@@ -504,67 +504,67 @@
               </connections>
               <inputs>
                 <input
-                  refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Inputs[OLE DB Destination Input]"
+                  refId="Package\(DFT) Load Data Into Destination Task\(DEST) Update Staging Table.Inputs[OLE DB Destination Input]"
                   errorOrTruncationOperation="Insert"
                   errorRowDisposition="FailComponent"
                   hasSideEffects="true"
                   name="OLE DB Destination Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Inputs[OLE DB Destination Input].Columns[Employee_Code]"
+                      refId="Package\(DFT) Load Data Into Destination Task\(DEST) Update Staging Table.Inputs[OLE DB Destination Input].Columns[Employee_Code]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="11"
                       cachedName="Employee_Code"
-                      externalMetadataColumnId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[catavolt_spectrum_code]"
+                      externalMetadataColumnId="Package\(DFT) Load Data Into Destination Task\(DEST) Update Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[catavolt_spectrum_code]"
                       lineageId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Output].Columns[Employee_Code]" />
                     <inputColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Inputs[OLE DB Destination Input].Columns[Worker_Comp_Code]"
+                      refId="Package\(DFT) Load Data Into Destination Task\(DEST) Update Staging Table.Inputs[OLE DB Destination Input].Columns[Worker_Comp_Code]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="6"
                       cachedName="Worker_Comp_Code"
-                      externalMetadataColumnId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[catavolt_spectrum_workers_comp_code]"
+                      externalMetadataColumnId="Package\(DFT) Load Data Into Destination Task\(DEST) Update Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[catavolt_spectrum_workers_comp_code]"
                       lineageId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Output].Columns[Worker_Comp_Code]" />
                     <inputColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Inputs[OLE DB Destination Input].Columns[Hash]"
+                      refId="Package\(DFT) Load Data Into Destination Task\(DEST) Update Staging Table.Inputs[OLE DB Destination Input].Columns[Hash]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="66"
                       cachedName="Hash"
-                      externalMetadataColumnId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[catavolt_hash]"
+                      externalMetadataColumnId="Package\(DFT) Load Data Into Destination Task\(DEST) Update Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[catavolt_hash]"
                       lineageId="Package\(DFT) Load Data Into Destination Task\Script Component.Outputs[Output 0].Columns[Hash]" />
                     <inputColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Inputs[OLE DB Destination Input].Columns[Employment_Status]"
+                      refId="Package\(DFT) Load Data Into Destination Task\(DEST) Update Staging Table.Inputs[OLE DB Destination Input].Columns[Employment_Status]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="1"
                       cachedName="Employment_Status"
-                      externalMetadataColumnId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[catavolt_spectrum_employment_status]"
+                      externalMetadataColumnId="Package\(DFT) Load Data Into Destination Task\(DEST) Update Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[catavolt_spectrum_employment_status]"
                       lineageId="Package\(DFT) Load Data Into Destination Task\(SRC) Get Spectrum Data.Outputs[OLE DB Source Output].Columns[Employment_Status]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[catavolt_spectrum_code]"
+                      refId="Package\(DFT) Load Data Into Destination Task\(DEST) Update Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[catavolt_spectrum_code]"
                       codePage="1252"
                       dataType="str"
                       length="50"
                       name="catavolt_spectrum_code" />
                     <externalMetadataColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[catavolt_spectrum_workers_comp_code]"
+                      refId="Package\(DFT) Load Data Into Destination Task\(DEST) Update Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[catavolt_spectrum_workers_comp_code]"
                       codePage="1252"
                       dataType="str"
                       length="10"
                       name="catavolt_spectrum_workers_comp_code" />
                     <externalMetadataColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[catavolt_hash]"
+                      refId="Package\(DFT) Load Data Into Destination Task\(DEST) Update Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[catavolt_hash]"
                       codePage="1252"
                       dataType="str"
                       length="66"
                       name="catavolt_hash" />
                     <externalMetadataColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[catavolt_spectrum_employment_status]"
+                      refId="Package\(DFT) Load Data Into Destination Task\(DEST) Update Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[catavolt_spectrum_employment_status]"
                       codePage="1252"
                       dataType="str"
                       length="1"
@@ -574,22 +574,22 @@
               </inputs>
               <outputs>
                 <output
-                  refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Outputs[OLE DB Destination Error Output]"
+                  refId="Package\(DFT) Load Data Into Destination Task\(DEST) Update Staging Table.Outputs[OLE DB Destination Error Output]"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="OLE DB Destination Error Output"
-                  synchronousInputId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Inputs[OLE DB Destination Input]">
+                  synchronousInputId="Package\(DFT) Load Data Into Destination Task\(DEST) Update Staging Table.Inputs[OLE DB Destination Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      refId="Package\(DFT) Load Data Into Destination Task\(DEST) Update Staging Table.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      lineageId="Package\(DFT) Load Data Into Destination Task\(DEST) Update Staging Table.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      refId="Package\(DFT) Load Data Into Destination Task\(DEST) Update Staging Table.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\(DFT) Load Data Into Destination Task\(DEST) Update Staging Table.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -2138,7 +2138,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
           <paths>
             <path
               refId="Package\(DFT) Load Data Into Destination Task.Paths[Changed Rows]"
-              endId="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table.Inputs[OLE DB Destination Input]"
+              endId="Package\(DFT) Load Data Into Destination Task\(DEST) Update Staging Table.Inputs[OLE DB Destination Input]"
               name="Changed Rows"
               startId="Package\(DFT) Load Data Into Destination Task\(CSPL) Compare Hashes.Outputs[Changed Rows]" />
             <path
@@ -3766,8 +3766,8 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
       <GraphLayout
         Capacity="32" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph" xmlns:mssge="clr-namespace:Microsoft.SqlServer.Graph.Extended;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
         <NodeLayout
-          Size="206,42"
-          Id="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table"
+          Size="217,42"
+          Id="Package\(DFT) Load Data Into Destination Task\(DEST) Update Staging Table"
           TopLeft="637.462958750166,593.969359371303" />
         <NodeLayout
           Size="193,42"
@@ -3989,25 +3989,37 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\(DFT) Load Data Into Destination Task.Paths[Changed Rows]"
-          TopLeft="737.018514333316,553.934874057455">
+          TopLeft="733.574069916466,553.934874057455">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,40.034485313848"
+              EndConnector="12.3888888337,40.034485313848"
               Start="0,0"
-              End="0,32.534485313848">
+              End="12.3888888337,32.534485313848">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,32.534485313848" />
+                    End="0,16.017242656924" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,16.017242656924"
+                    Point2="0,20.017242656924"
+                    Point3="4,20.017242656924" />
+                  <mssgle:LineSegment
+                    End="8.38888883369998,20.017242656924" />
+                  <mssgle:CubicBezierSegment
+                    Point1="8.38888883369998,20.017242656924"
+                    Point2="12.3888888337,20.017242656924"
+                    Point3="12.3888888337,24.017242656924" />
+                  <mssgle:LineSegment
+                    End="12.3888888337,32.534485313848" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-33.44009765625,10.435699688174,66.8801953125,11.6630859375"
+              BoundingBox="-27.2456532394,25.017242656924,66.8801953125,11.6630859375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -4060,7 +4072,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\(DFT) Load Data Into Destination Task\(DEST) Load Staging Table">
+    design-time-name="Package\(DFT) Load Data Into Destination Task\(DEST) Update Staging Table">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
